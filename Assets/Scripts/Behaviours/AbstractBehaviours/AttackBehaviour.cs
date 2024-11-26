@@ -1,0 +1,11 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public abstract class AttackBehaviour : MonoBehaviour
+{
+    [SerializeField] protected float attack = 1f;
+    [SerializeField] protected float attackSpeed = 1f;
+
+    public abstract void Attack(GameObject target);
+}
