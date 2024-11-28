@@ -6,7 +6,7 @@ using UnityEngine.Events;
 
 public class EnemySpawner : MonoBehaviour
 {
-    [Header("Enemy Prefab")]
+    [Header("Prefabs")]
     [SerializeField] GameObject enemyPrefab;
 
     [Header("Spawn parameters")]
@@ -15,22 +15,22 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] Vector3 targetPosition;
 
     [Header("Events")]
-    public UnityEvent<GameObject, Vector3> onEnemySpawned;
+    public static System.Action<GameObject> onEnemySpawned;
 
     int spawnedEnemiesCount = 0;
     
     void Start()
     {
         targetPosition = GameObject.FindGameObjectWithTag("EnemyTarget").transform.position;
-        onEnemySpawned.AddListener(GameController.instance.OnEnemySpawned);
 
-        InvokeRepeating("SpawnEnemy", 0, spawnTimer);
+        InvokeRepeating(nameof(SpawnEnemy), 0, spawnTimer);
     }
 
     void SpawnEnemy()
     {
         GameObject newEnemy = Instantiate(enemyPrefab, transform.position, Quaternion.identity);
-        onEnemySpawned?.Invoke(newEnemy, targetPosition);
+        newEnemy.GetComponent<EnemyController>().SetTargetPosition(targetPosition);
+        onEnemySpawned?.Invoke(newEnemy);
 
         UpdateSpawnCount();
     }
@@ -40,7 +40,7 @@ public class EnemySpawner : MonoBehaviour
         spawnedEnemiesCount++;
         if (spawnedEnemiesCount >= spawnCount)
         {
-            CancelInvoke("SpawnEnemy");
+            CancelInvoke(nameof(SpawnEnemy));
         }
     }
 }

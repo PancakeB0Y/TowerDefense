@@ -4,26 +4,23 @@ using UnityEngine;
 
 public class BasicAttackBehaviour : AttackBehaviour
 {
-    private IEnumerator coroutine;
+    float timePassed;
+
+    private void Start()
+    {
+        timePassed = attackSpeed;
+    }
 
     public override void Attack(GameObject target)
     {
-        
+        timePassed += Time.deltaTime;
+
         EnemyController enemyController = target.GetComponent<EnemyController>();
 
-        if (enemyController != null)
+        if (enemyController != null && timePassed >= attackSpeed)
         {
-            enemyController.TakeDamage(attack);
-        }
-    }
-
-    private IEnumerator AttackCoroutine(EnemyController enemyController)
-    {
-        while (true)
-        {
-            enemyController.TakeDamage(attack);
-
-            yield return new WaitForSeconds(attackSpeed);
+            enemyController.GetHit(attack);
+            timePassed = 0;
         }
     }
 }

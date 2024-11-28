@@ -10,24 +10,28 @@ public class EnemyController : MonoBehaviour
     [SerializeField] MoveBehaviour moveBehaviour;
 
     [Header("Stats")]
-    [SerializeField] float maxHealth = 100f;
-    [SerializeField] float health = 100f;
+    [SerializeField] HPModel hpModel;
     [SerializeField] float attack;
     [SerializeField] float defense;
 
     [Header("Events")]
-    public UnityEvent<GameObject> onTargetReached;
-    public UnityEvent<GameObject> onDeath;
+    public static System.Action<GameObject> onTargetReached;
+    public static System.Action<float> onHit;
 
-    void Awake()
+    private void Awake()
     {
         moveBehaviour = GetComponent<MoveBehaviour>();
+        hpModel = GetComponent<HPModel>();
     }
 
-    private void Start()
+    private void OnEnable()
     {
-        onTargetReached.AddListener(GameController.instance.OnEnemyTargetReached);
-        onDeath.AddListener(GameController.instance.OnEnemyDeath);
+        HPModel.onDeath += Die;
+    }
+
+    private void OnDisable()
+    {
+        HPModel.onDeath -= Die;
     }
 
     private void FixedUpdate()
@@ -35,20 +39,25 @@ public class EnemyController : MonoBehaviour
         if (moveBehaviour.IsTargetReached())
         {
             onTargetReached?.Invoke(gameObject);
+            Die(gameObject);
         }
     }
 
     public void SetTargetPosition(Vector3 targetPosition)
     {
-        moveBehaviour.SetTargetPosition(targetPosition);
+        if (moveBehaviour != null)
+        {
+            moveBehaviour.SetTargetPosition(targetPosition);
+        }
     }
 
-    public void TakeDamage(float damage)
+    public void GetHit(float damage)
     {
-        health -= damage;
+        onHit?.Invoke(damage);
+    }
 
-        if (health <= 0){ 
-            onDeath?.Invoke(gameObject);
-        }
+    public void Die(GameObject enemy)
+    {
+        Destroy(this);
     }
 }

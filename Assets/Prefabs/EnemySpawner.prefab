@@ -44,7 +44,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1de860fafa72d754483e1552ca486989, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyPrefab: {fileID: 2938612354531513519, guid: b37f1ea899b376d4f8c2f8b5bc5462f1, type: 3}
+  enemyPrefab: {fileID: 9003151504383579004, guid: b37f1ea899b376d4f8c2f8b5bc5462f1, type: 3}
+  spawnTimer: 1
+  spawnCount: 3
   targetPosition: {x: 0, y: 0, z: 0}
   onEnemySpawned:
     m_PersistentCalls:

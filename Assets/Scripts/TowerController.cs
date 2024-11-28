@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
+using static UnityEngine.GraphicsBuffer;
 
 public class TowerController : MonoBehaviour
 {
@@ -8,26 +10,21 @@ public class TowerController : MonoBehaviour
     [SerializeField] AttackBehaviour attackBehaviour;
     [SerializeField] TargetingBehaviour targetingBehaviour;
 
-    public List<GameObject> targets;
+    public UnityEvent onAttack;
 
     void Awake()
     {
         attackBehaviour = GetComponent<AttackBehaviour>();
         targetingBehaviour = GetComponent<TargetingBehaviour>();
-
-        targets = new List<GameObject>();
     }
 
     private void FixedUpdate()
     {
         SetTargets();
 
-        //REMOVE TARGETS FROM TARGET LIST ON ENEMY DEATH
-        foreach (GameObject target in targets) {
-            if (target != null)
-            {
-               Attack(target);
-            }
+        for (int i = targetingBehaviour.targets.Count - 1; i >= 0; i--)
+        {
+            Attack(targetingBehaviour.targets[i]);
         }
     }
 
@@ -43,12 +40,7 @@ public class TowerController : MonoBehaviour
     {
         if (targetingBehaviour != null)
         {
-            targetingBehaviour.setTargets(targets);
+            targetingBehaviour.SetTargets();
         }
-    }
-
-    public void RemoveTarget(GameObject target)
-    {
-        targets.Remove(target);
     }
 }

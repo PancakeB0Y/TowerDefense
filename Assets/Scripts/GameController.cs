@@ -5,9 +5,9 @@ using UnityEngine.Events;
 
 public class GameController : MonoBehaviour
 {
-    public static GameController instance;
+    public static GameController instance { get; private set; }
 
-    public List<GameObject> enemies;
+    public List<GameObject> enemies { get; private set; }
 
     Camera mainCamera;
 
@@ -21,6 +21,7 @@ public class GameController : MonoBehaviour
         else
         {
             instance = this;
+            DontDestroyOnLoad(this);
         }
     }
 
@@ -30,26 +31,32 @@ public class GameController : MonoBehaviour
         mainCamera = Camera.main;
     }
 
-    void Update()
+    private void OnEnable()
     {
-        
+        HPModel.onDeath += OnEnemyDeath;
+        EnemyController.onTargetReached += OnEnemyTargetReached;
+        EnemySpawner.onEnemySpawned += OnEnemySpawned;
     }
 
-    public void OnEnemySpawned(GameObject enemy, Vector3 targetPosition)
+    private void OnDisable()
     {
-        enemy.GetComponent<EnemyController>().SetTargetPosition(targetPosition);
+        HPModel.onDeath -= OnEnemyDeath;
+        EnemyController.onTargetReached -= OnEnemyTargetReached;
+        EnemySpawner.onEnemySpawned -= OnEnemySpawned;
+    }
+
+    public void OnEnemySpawned(GameObject enemy)
+    {
         enemies.Add(enemy);
     }
 
     public void OnEnemyTargetReached(GameObject enemy)
     {
         enemies.Remove(enemy);
-        Destroy(enemy);
     }
 
     public void OnEnemyDeath(GameObject enemy)
     {
         enemies.Remove(enemy);
-        Destroy(enemy);
     }
 }
