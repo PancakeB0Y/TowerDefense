@@ -9,38 +9,45 @@ public class EnemySpawner : MonoBehaviour
     [Header("Prefabs")]
     [SerializeField] GameObject enemyPrefab;
 
+    [Header("Behaviours")]
+    [SerializeField] SpawningBehaviour spawningBehaviour;
+
     [Header("Spawn parameters")]
-    [SerializeField] float spawnTimer = 1f;
-    [SerializeField] int spawnCount = 3;
     [SerializeField] Vector3 targetPosition;
 
     [Header("Events")]
     public static System.Action<GameObject> onEnemySpawned;
 
-    int spawnedEnemiesCount = 0;
-    
+    private void Awake()
+    {
+        spawningBehaviour = GetComponent<SpawningBehaviour>();
+    }
+
     void Start()
     {
-        targetPosition = GameObject.FindGameObjectWithTag("EnemyTarget").transform.position;
+        targetPosition = GameObject.FindGameObjectWithTag("EnemyGoal").transform.position;
+    }
 
-        InvokeRepeating(nameof(SpawnEnemy), 0, spawnTimer);
+    private void OnEnable()
+    {
+        spawningBehaviour.onSpawn += SpawnEnemy; 
+    }
+
+    public void StartSpawning()
+    {
+        spawningBehaviour.StartSpawning();
+    }
+
+    private void OnDisable()
+    {
+        spawningBehaviour.onSpawn -= SpawnEnemy;
     }
 
     void SpawnEnemy()
     {
         GameObject newEnemy = Instantiate(enemyPrefab, transform.position, Quaternion.identity);
         newEnemy.GetComponent<EnemyController>().SetTargetPosition(targetPosition);
-        onEnemySpawned?.Invoke(newEnemy);
-
-        UpdateSpawnCount();
-    }
-
-    void UpdateSpawnCount()
-    {
-        spawnedEnemiesCount++;
-        if (spawnedEnemiesCount >= spawnCount)
-        {
-            CancelInvoke(nameof(SpawnEnemy));
-        }
+        EnemyController.AddEnemy(newEnemy);
+        //onEnemySpawned?.Invoke(newEnemy);
     }
 }

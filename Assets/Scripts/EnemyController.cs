@@ -16,7 +16,8 @@ public class EnemyController : MonoBehaviour
 
     [Header("Events")]
     public static System.Action<GameObject> onTargetReached;
-    public static System.Action<float> onHit;
+
+    public static List<GameObject> Enemies { get; private set; } = new List<GameObject>();
 
     private void Awake()
     {
@@ -26,12 +27,12 @@ public class EnemyController : MonoBehaviour
 
     private void OnEnable()
     {
-        HPModel.onDeath += Die;
+        hpModel.onDeath += Die;
     }
 
     private void OnDisable()
     {
-        HPModel.onDeath -= Die;
+        hpModel.onDeath -= Die;
     }
 
     private void FixedUpdate()
@@ -39,7 +40,7 @@ public class EnemyController : MonoBehaviour
         if (moveBehaviour.IsTargetReached())
         {
             onTargetReached?.Invoke(gameObject);
-            Die(gameObject);
+            Die();
         }
     }
 
@@ -51,13 +52,14 @@ public class EnemyController : MonoBehaviour
         }
     }
 
-    public void GetHit(float damage)
+    public void Die()
     {
-        onHit?.Invoke(damage);
+        Enemies.Remove(gameObject);
+        Destroy(gameObject);
     }
 
-    public void Die(GameObject enemy)
+    public static void AddEnemy(GameObject enemy)
     {
-        Destroy(this);
+        Enemies.Add(enemy);
     }
 }

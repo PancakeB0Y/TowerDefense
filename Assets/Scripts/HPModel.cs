@@ -8,7 +8,7 @@ public class HPModel : MonoBehaviour
     [SerializeField] HPData hpData;
     [SerializeField] AbstractHPPresenter hpPresenter;
 
-    public static System.Action<GameObject> onDeath;
+    public System.Action onDeath;
     private void Start()
     {
         hpPresenter = GetComponentInChildren<AbstractHPPresenter>();
@@ -16,33 +16,19 @@ public class HPModel : MonoBehaviour
         ChangeHP(0);
     }
 
-    private void OnEnable()
-    {
-        EnemyController.onHit += ChangeHP;
-    }
-
-    private void OnDisable()
-    {
-        EnemyController.onHit -= ChangeHP;
-    }
-
     public void ChangeHP(float value)
     {
         if (hpData.currentHP > 0)
         {
             hpData.currentHP -= value;
-            if (hpData.currentHP == 0)
+            hpPresenter.PresentHP(hpData);
+
+            if (hpData.currentHP <= 0)
             {
-                onDeath?.Invoke(gameObject);
-            }
-            else
-            {
-                hpPresenter.PresentHP(hpData);
+                onDeath?.Invoke();
             }
         }
-    }
-
-    
+    }    
 }
 
 //Serializable makes the class show up and be able to be modified in Unity Inspector 

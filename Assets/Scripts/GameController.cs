@@ -7,7 +7,7 @@ public class GameController : MonoBehaviour
 {
     public static GameController instance { get; private set; }
 
-    public List<GameObject> enemies { get; private set; }
+    [SerializeField] HPModel hpModel;
 
     Camera mainCamera;
 
@@ -23,40 +23,35 @@ public class GameController : MonoBehaviour
             instance = this;
             DontDestroyOnLoad(this);
         }
+
+        hpModel = GetComponent<HPModel>();
     }
 
     void Start()
     {
-        enemies = new List<GameObject>();
         mainCamera = Camera.main;
     }
 
     private void OnEnable()
     {
-        HPModel.onDeath += OnEnemyDeath;
         EnemyController.onTargetReached += OnEnemyTargetReached;
-        EnemySpawner.onEnemySpawned += OnEnemySpawned;
+        hpModel.onDeath += GameOver;
     }
 
     private void OnDisable()
     {
-        HPModel.onDeath -= OnEnemyDeath;
         EnemyController.onTargetReached -= OnEnemyTargetReached;
-        EnemySpawner.onEnemySpawned -= OnEnemySpawned;
-    }
-
-    public void OnEnemySpawned(GameObject enemy)
-    {
-        enemies.Add(enemy);
+        hpModel.onDeath -= GameOver;
     }
 
     public void OnEnemyTargetReached(GameObject enemy)
     {
-        enemies.Remove(enemy);
+        hpModel.ChangeHP(1);
     }
 
-    public void OnEnemyDeath(GameObject enemy)
+    void GameOver()
     {
-        enemies.Remove(enemy);
+        
     }
+
 }

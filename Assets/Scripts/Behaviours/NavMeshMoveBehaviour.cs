@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class NavMeshController : MoveBehaviour
+public class NavMeshMoveBehaviour : MoveBehaviour
 {
     [SerializeField] NavMeshAgent agent;
     
@@ -23,7 +23,7 @@ public class NavMeshController : MoveBehaviour
     public override bool IsTargetReached()
     {
         float dist = agent.remainingDistance;
-        if (dist != Mathf.Infinity && dist < targetRange)
+        if (!agent.pathPending && dist != Mathf.Infinity && dist < targetRange)
         {
             return true;
         }

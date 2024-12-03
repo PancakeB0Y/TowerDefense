@@ -251,7 +251,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: 21300000, guid: 6214571dc7ae8ad4ca1edff22178555b, type: 3}
   m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -399,9 +399,6 @@ MonoBehaviour:
   hpModel: {fileID: 0}
   attack: 0
   defense: 0
-  onTargetReached:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!114 &6453571270104518456
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -414,6 +411,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf5f5e600c2d36444b72648090c4585b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  targetRange: 0.2
   agent: {fileID: 0}
 --- !u!114 &3349176785450811270
 MonoBehaviour:
@@ -431,6 +429,4 @@ MonoBehaviour:
     maxHP: 20
     currentHP: 20
   hpPresenter: {fileID: 0}
-  onDeath:
-    m_PersistentCalls:
-      m_Calls: []
+  enemyController: {fileID: 0}

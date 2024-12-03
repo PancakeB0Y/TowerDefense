@@ -10,7 +10,7 @@ public class TowerController : MonoBehaviour
     [SerializeField] AttackBehaviour attackBehaviour;
     [SerializeField] TargetingBehaviour targetingBehaviour;
 
-    public UnityEvent onAttack;
+    public System.Action onAttack;
 
     void Awake()
     {

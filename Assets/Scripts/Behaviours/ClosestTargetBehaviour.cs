@@ -4,15 +4,6 @@ using UnityEngine;
 
 public class ClosestTargetingBehaviour : TargetingBehaviour
 {
-    private void OnEnable()
-    {
-        HPModel.onDeath += RemoveTarget;
-    }
-
-    private void OnDisable()
-    {
-        HPModel.onDeath -= RemoveTarget;
-    }
 
     public override void RemoveTarget(GameObject target)
     {
@@ -21,18 +12,19 @@ public class ClosestTargetingBehaviour : TargetingBehaviour
 
     public override void SetTargets()
     {
-        GameObject closestEnemy = GetClosestTarget();
-
-        AddTarget(closestEnemy);
+        RemoveDeadTargets();
 
         RemoveOutOfRangeTargets();
+
+        GameObject closestEnemy = GetClosestTarget();
+        AddTarget(closestEnemy);
     }
 
     GameObject GetClosestTarget()
     {
         GameObject closestTarget = null;
         float closestDistance = Mathf.Infinity;
-        foreach (GameObject enemy in GameController.instance.enemies)
+        foreach (GameObject enemy in EnemyController.Enemies)
         {
             float dist = Vector3.Magnitude(enemy.transform.position - transform.position);
             if (dist < closestDistance && IsInRange(enemy.transform.position))
@@ -70,6 +62,17 @@ public class ClosestTargetingBehaviour : TargetingBehaviour
             if (!IsInRange(targets[i].transform.position))
             {
                 targets.RemoveAt(i);
+            }
+        }
+    }
+
+    void RemoveDeadTargets()
+    {
+        for(int i = targets.Count - 1; i >= 0; i--)
+        {
+            if (!EnemyController.Enemies.Contains(targets[i]))
+            {
+                RemoveTarget(targets[i]);
             }
         }
     }
