@@ -7,15 +7,18 @@ public class BasicAttackBehaviour : AttackBehaviour
 {
     float timePassed;
     [SerializeField] GameObject bulletPrefab;
+    HeadPivot headPivot;
 
     private void Start()
     {
         timePassed = attackSpeed;
+        headPivot = GetComponentInChildren<HeadPivot>();
     }
 
     public override void Attack(GameObject target)
     {
         timePassed += Time.deltaTime;
+        headPivot.RotateTowardsTarget(target.transform);
         if(timePassed >= attackSpeed)
         {
             timePassed = 0;

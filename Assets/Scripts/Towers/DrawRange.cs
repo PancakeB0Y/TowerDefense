@@ -5,32 +5,19 @@ using UnityEngine;
 
 public class DrawRange : MonoBehaviour
 {
-    [SerializeField] bool renderRange = true;
+    [SerializeField] bool renderRange = false;
     [SerializeField] int subdivisions = 20;
     LineRenderer lineRenderer;
     float radius;
-    float yPos;
-
-    void Awake()
-    {
-        lineRenderer = gameObject.AddComponent<LineRenderer>();
-        lineRenderer.material = new Material(Shader.Find("Transparent/Diffuse"));
-        lineRenderer.material.color = UnityEngine.Color.blue;
-        lineRenderer.startColor = UnityEngine.Color.blue;
-        lineRenderer.endColor = UnityEngine.Color.blue;
-        lineRenderer.startWidth = 0.2f;
-        lineRenderer.endWidth = 0.2f;
-        lineRenderer.positionCount = subdivisions;
-    }
 
     private void Start()
     {
+        lineRenderer = GetComponent<LineRenderer>();
         radius = GetComponent<TargetingBehaviour>().range;
+        
+        SetupLineRenderer();
 
-        Mesh mesh = GetComponentInChildren<MeshFilter>().mesh;
-        Bounds bounds = mesh.bounds;
-        yPos = bounds.extents.y - bounds.size.y;
-
+        //Draw the range of the tower
         DrawCircle();
     }
 
@@ -46,6 +33,18 @@ public class DrawRange : MonoBehaviour
         }
     }
 
+    //Set up the parameters of the line renderer
+    void SetupLineRenderer()
+    {
+        lineRenderer.material = new Material(Shader.Find("Transparent/Diffuse"));
+        lineRenderer.material.color = UnityEngine.Color.blue;
+        lineRenderer.startColor = UnityEngine.Color.blue;
+        lineRenderer.endColor = UnityEngine.Color.blue;
+        lineRenderer.startWidth = 0.2f;
+        lineRenderer.endWidth = 0.2f;
+        lineRenderer.positionCount = subdivisions;
+    }
+
     void DrawCircle()
     {
         float angleStep = 2f * Mathf.PI / 10;
@@ -55,9 +54,21 @@ public class DrawRange : MonoBehaviour
             float xPos = radius * Mathf.Cos(angleStep * i);
             float zPos = radius * Mathf.Sin(angleStep * i);
 
-            Vector3 pointInCircle = new Vector3(xPos, yPos, zPos);
+            Vector3 pointInCircle = new Vector3(xPos, transform.position.y, zPos);
 
             lineRenderer.SetPosition(i, pointInCircle + transform.position);
         }
+    }
+
+    public void RenderRange()
+    {
+        renderRange = true;
+
+        DrawCircle();
+    }
+
+    public void DisableRange()
+    {
+        renderRange = false;
     }
 }

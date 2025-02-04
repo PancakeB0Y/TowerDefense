@@ -6,6 +6,7 @@ TagManager:
   tags:
   - EnemySpawner
   - EnemyGoal
+  - Tower
   layers:
   - Default
   - TransparentFX

@@ -397,8 +397,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveBehaviour: {fileID: 0}
   hpModel: {fileID: 0}
-  speed: 5
-  money: 20
+  speed: 8
+  money: 40
 --- !u!114 &6453571270104518456
 MonoBehaviour:
   m_ObjectHideFlags: 0
