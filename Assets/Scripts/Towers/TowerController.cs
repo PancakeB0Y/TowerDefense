@@ -20,7 +20,7 @@ public class TowerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        SetTargets();
+        GetTargets();
 
         for (int i = targetingBehaviour.targets.Count - 1; i >= 0; i--)
         {
@@ -36,11 +36,11 @@ public class TowerController : MonoBehaviour
         }
     }
 
-    public void SetTargets()
+    public void GetTargets()
     {
         if (targetingBehaviour != null)
         {
-            targetingBehaviour.SetTargets();
+            targetingBehaviour.GetTargets();
         }
     }
 }

@@ -14,4 +14,6 @@ public abstract class MoveBehaviour : MonoBehaviour
     }
 
     public abstract bool IsTargetReached();
+
+    public abstract void SetSpeed(float speed);
 }

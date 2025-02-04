@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -11,8 +12,8 @@ public class EnemyController : MonoBehaviour
 
     [Header("Stats")]
     [SerializeField] HPModel hpModel;
-    [SerializeField] float attack;
-    [SerializeField] float defense;
+    [SerializeField] float speed = 7;
+    [SerializeField] int money = 0;
 
     [Header("Events")]
     public static System.Action<GameObject> onTargetReached;
@@ -25,18 +26,33 @@ public class EnemyController : MonoBehaviour
         hpModel = GetComponent<HPModel>();
     }
 
+    private void Start()
+    {
+        if (moveBehaviour != null)
+        {
+            moveBehaviour.SetSpeed(speed);
+        }
+    }
+
     private void OnEnable()
     {
         hpModel.onDeath += Die;
+        hpModel.onDeath += DropMoney;
     }
 
     private void OnDisable()
     {
         hpModel.onDeath -= Die;
+        hpModel.onDeath -= DropMoney;
     }
 
     private void FixedUpdate()
     {
+        if(moveBehaviour == null)
+        {
+            return;
+        }
+
         if (moveBehaviour.IsTargetReached())
         {
             onTargetReached?.Invoke(gameObject);
@@ -54,8 +70,15 @@ public class EnemyController : MonoBehaviour
 
     public void Die()
     {
+        //Remove enemy from scene
         Enemies.Remove(gameObject);
         Destroy(gameObject);
+    }
+
+    void DropMoney()
+    {
+        //Get money from enemy death
+        MoneyModel.instance.GainMoney(money);
     }
 
     public static void AddEnemy(GameObject enemy)

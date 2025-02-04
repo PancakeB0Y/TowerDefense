@@ -10,14 +10,14 @@ public class ClosestTargetingBehaviour : TargetingBehaviour
         targets.Remove(target);
     }
 
-    public override void SetTargets()
+    public override void GetTargets()
     {
         RemoveDeadTargets();
 
         RemoveOutOfRangeTargets();
 
-        GameObject closestEnemy = GetClosestTarget();
-        AddTarget(closestEnemy);
+        GameObject closestTarget = GetClosestTarget();
+        AddTarget(closestTarget);
     }
 
     GameObject GetClosestTarget()

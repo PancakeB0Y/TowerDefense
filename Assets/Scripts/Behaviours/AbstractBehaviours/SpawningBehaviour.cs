@@ -5,9 +5,12 @@ using UnityEngine;
 public abstract class SpawningBehaviour : MonoBehaviour
 {
     [Header("Spawn parameters")]
-    [SerializeField] protected float spawnTimer = 1f;
+    protected float spawnInterval = 1f;
 
     public System.Action onSpawn;
 
     public abstract void StartSpawning();
+    public abstract void StopSpawning();
+
+    public abstract void SetWaveData(WaveData waveData);
 }

@@ -29,6 +29,9 @@ public class BasicAttackBehaviour : AttackBehaviour
     void TargetHit(GameObject target)
     {
         HPModel targetHPModel = target.GetComponent<HPModel>();
-        targetHPModel.ChangeHP(attack);
+
+        if (targetHPModel != null) { 
+            targetHPModel.LoseHP(attack);
+        }
     }
 }

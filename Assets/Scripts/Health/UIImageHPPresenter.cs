@@ -8,7 +8,7 @@ public class UIImageHPPresenter : AbstractHPPresenter
 {
     [SerializeField] Image hpBar;
 
-    private void Start()
+    private void Awake()
     {
         hpBar = GetComponent<Image>();
     }

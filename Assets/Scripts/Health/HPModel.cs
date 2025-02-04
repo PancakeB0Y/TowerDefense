@@ -13,10 +13,10 @@ public class HPModel : MonoBehaviour
     {
         hpPresenter = GetComponentInChildren<AbstractHPPresenter>();
 
-        ChangeHP(0);
+        LoseHP(0);
     }
 
-    public void ChangeHP(float value)
+    public void LoseHP(float value)
     {
         if (hpData.currentHP > 0)
         {

@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class GameController : MonoBehaviour
+public class BaseController : MonoBehaviour
 {
-    public static GameController instance { get; private set; }
+    public static BaseController instance { get; private set; }
 
     [SerializeField] HPModel hpModel;
 
-    Camera mainCamera;
+    public System.Action onBaseDeath;
 
     void Awake()
     {
@@ -21,37 +21,31 @@ public class GameController : MonoBehaviour
         else
         {
             instance = this;
-            DontDestroyOnLoad(this);
         }
 
         hpModel = GetComponent<HPModel>();
     }
 
-    void Start()
-    {
-        mainCamera = Camera.main;
-    }
-
     private void OnEnable()
     {
         EnemyController.onTargetReached += OnEnemyTargetReached;
-        hpModel.onDeath += GameOver;
+        hpModel.onDeath += BaseDeath;
     }
 
     private void OnDisable()
     {
         EnemyController.onTargetReached -= OnEnemyTargetReached;
-        hpModel.onDeath -= GameOver;
+        hpModel.onDeath -= BaseDeath;
     }
 
     public void OnEnemyTargetReached(GameObject enemy)
     {
-        hpModel.ChangeHP(1);
+        hpModel.LoseHP(1);
     }
 
-    void GameOver()
+    void BaseDeath()
     {
-        
+        onBaseDeath?.Invoke();
+        //Play base death animation
     }
-
 }

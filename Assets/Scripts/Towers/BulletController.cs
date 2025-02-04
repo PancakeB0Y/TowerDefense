@@ -29,7 +29,14 @@ public class BulletController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        onHit.Invoke(other.gameObject);
+        EnemyController enemy = other.GetComponent<EnemyController>();
+
+        if(enemy == null)
+        {
+            return;
+        }
+
+        onHit?.Invoke(other.gameObject);
         Destroy(gameObject);
     }
 }

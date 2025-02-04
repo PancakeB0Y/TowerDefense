@@ -4,17 +4,52 @@ using UnityEngine;
 
 public class IntervalSpawningBehaviour : SpawningBehaviour
 {
-    [SerializeField] int spawnCount = 3;
-    int spawnedEnemiesCount = 0;
+    int spawnCount;
+    int spawnedEnemiesCount;
+
+    WaitForSeconds spawnIntervalWait;
+
+    private void Start()
+    {
+        spawnIntervalWait = new WaitForSeconds(spawnInterval);
+    }
 
     public override void StartSpawning()
     {
         spawnedEnemiesCount = 0;
-        InvokeRepeating(nameof(Spawn), 0, spawnTimer);
+        StartCoroutine(SpawnCoroutine());
+    }
+
+    public override void StopSpawning()
+    {
+        StopAllCoroutines();
+    }
+
+    public override void SetWaveData(WaveData waveData)
+    {
+        spawnInterval = waveData.spawnInterval;
+
+        spawnCount = waveData.enemy1Amount + waveData.enemy2Amount;
+    }
+
+    IEnumerator SpawnCoroutine()
+    {
+        while (true)
+        {
+            Spawn();
+
+            yield return new WaitForSeconds(spawnInterval);
+        }
     }
 
     void Spawn()
     {
+        if (spawnedEnemiesCount >= spawnCount)
+        {
+            StopAllCoroutines();
+            return;
+        }
+
         onSpawn.Invoke();
         UpdateSpawnCount();
     }
@@ -22,9 +57,5 @@ public class IntervalSpawningBehaviour : SpawningBehaviour
     void UpdateSpawnCount()
     {
         spawnedEnemiesCount++;
-        if (spawnedEnemiesCount >= spawnCount)
-        {
-            CancelInvoke(nameof(Spawn));
-        }
     }
 }

@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
 
+[RequireComponent(typeof(NavMeshAgent))]
 public class NavMeshMoveBehaviour : MoveBehaviour
 {
     [SerializeField] NavMeshAgent agent;
@@ -31,5 +32,11 @@ public class NavMeshMoveBehaviour : MoveBehaviour
         {
             return false;
         }
+    }
+
+    public override void SetSpeed(float speed)
+    {
+        agent.speed = speed;
+        agent.acceleration = speed;
     }
 }

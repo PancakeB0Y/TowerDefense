@@ -12,7 +12,7 @@ public abstract class TargetingBehaviour : MonoBehaviour
     [SerializeField] public List<GameObject> targets = new List<GameObject>();
 
     public abstract void RemoveTarget(GameObject target);
-    public abstract void SetTargets();
+    public abstract void GetTargets();
 
     protected bool IsInRange(Vector3 objectPos)
     {

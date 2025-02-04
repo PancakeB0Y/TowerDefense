@@ -14,10 +14,11 @@ public class WaveManager : MonoBehaviour
     [SerializeField] List<EnemySpawner> spawners;
 
     int currentWave = 0;
+    WaitForSeconds waveIntervalWait;
 
-    //Ensure singleton
     void Awake()
     {
+        //Ensure singleton
         if (instance != null && instance != this)
         {
             Destroy(this);
@@ -25,7 +26,6 @@ public class WaveManager : MonoBehaviour
         else
         {
             instance = this;
-            DontDestroyOnLoad(this);
         }
     }
 
@@ -37,16 +37,22 @@ public class WaveManager : MonoBehaviour
             spawners.Add(spawnerObjects[i].GetComponent<EnemySpawner>());
         }
 
-        InvokeRepeating(nameof(StartWave), 0, waveInterval);
+        waveIntervalWait = new WaitForSeconds(waveInterval);
+        StartCoroutine(SpawnWavesCoroutine());
     }
 
-    void StartWave()
+    IEnumerator SpawnWavesCoroutine()
     {
-        foreach(EnemySpawner spawner in spawners)
+        while (true)
         {
-            spawner.StartSpawning();
+            foreach (EnemySpawner spawner in spawners)
+            {
+                spawner.StartSpawning(currentWave);
+            }
+            UpdateWaveCount();
+
+            yield return waveIntervalWait;
         }
-        UpdateWaveCount();
     }
 
     void UpdateWaveCount()
@@ -54,7 +60,16 @@ public class WaveManager : MonoBehaviour
         currentWave++;
         if (currentWave >= numberOfWaves)
         {
-            CancelInvoke(nameof(StartWave));
+            StopSpawning();
+        }
+    }
+
+    void StopSpawning()
+    {
+        StopAllCoroutines();
+        foreach (EnemySpawner spawner in spawners)
+        {
+            spawner.StopSpawning();
         }
     }
 }
