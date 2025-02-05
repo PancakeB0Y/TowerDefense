@@ -27,6 +27,9 @@ public class WaveManager : MonoBehaviour
         {
             instance = this;
         }
+
+        currentWave = 0;
+        spawners = new List<EnemySpawner>();
     }
 
     private void Start()
@@ -36,6 +39,8 @@ public class WaveManager : MonoBehaviour
         {
             spawners.Add(spawnerObjects[i].GetComponent<EnemySpawner>());
         }
+
+        currentWave = 0;
 
         waveIntervalWait = new WaitForSeconds(waveInterval);
         StartCoroutine(SpawnWavesCoroutine());

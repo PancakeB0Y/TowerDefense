@@ -10,7 +10,7 @@ public class MoneyManager : MonoBehaviour
 
     [SerializeField] int startingMoney = 0;
 
-    int money = 0;
+    int currentMoney = 0;
 
     void Awake()
     {
@@ -22,6 +22,7 @@ public class MoneyManager : MonoBehaviour
         else
         {
             instance = this;
+            //DontDestroyOnLoad(gameObject);
         }
     }
 
@@ -34,13 +35,29 @@ public class MoneyManager : MonoBehaviour
 
     public void GainMoney(int money)
     {
-        this.money += money;
-        moneyPresenter.PresentMoney(this.money);
+        currentMoney += money;
+        moneyPresenter.PresentMoney(this.currentMoney);
     }
 
     public void LoseMoney(int money)
     {
-        this.money -= money;
-        moneyPresenter.PresentMoney(this.money);
+        currentMoney -= money;
+        moneyPresenter.PresentMoney(this.currentMoney);
+    }
+
+    public bool CanPurchaseTower(TowerController tower)
+    {
+        return tower.cost <= currentMoney;
+    }
+
+    public bool PurchaseTower(TowerController tower)
+    {
+        if (CanPurchaseTower(tower))
+        {
+            LoseMoney(tower.cost);
+            return true;
+        }
+
+        return false;
     }
 }

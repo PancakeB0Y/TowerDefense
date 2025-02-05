@@ -428,5 +428,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf5f5e600c2d36444b72648090c4585b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetRange: 0.3
+  targetRange: 0.5
   agent: {fileID: 0}

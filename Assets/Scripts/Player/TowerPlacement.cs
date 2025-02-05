@@ -20,6 +20,7 @@ public class TowerPlacement : MonoBehaviour
     Material gridShaderMaterial;
 
     Camera playerCamera;
+
     GameObject currentPlacingTower;
     DrawRange currentDrawRange;
 
@@ -35,7 +36,12 @@ public class TowerPlacement : MonoBehaviour
 
     void Update()
     {
-        if(currentPlacingTower == null || currentDrawRange == null)
+        if (Input.GetMouseButtonDown(1))
+        {
+            DeselectTower();
+        }
+
+        if (currentPlacingTower == null || currentDrawRange == null)
         {
             return;
         }
@@ -61,65 +67,65 @@ public class TowerPlacement : MonoBehaviour
         Vector3 halfExtends = towerCollider.size / 2;
         towerCollider.isTrigger = true;
 
-        if (!Physics.CheckBox(currentPlacingTower.transform.position, halfExtends, Quaternion.identity, ObstacleLayer, QueryTriggerInteraction.Ignore))
+        if (Physics.CheckBox(currentPlacingTower.transform.position, halfExtends, Quaternion.identity, ObstacleLayer, QueryTriggerInteraction.Ignore))
         {
-            if (Input.GetMouseButtonDown(0))
+            gridShaderMaterial.SetColor("_Color", unplacableGridColor);
+            return;
+        }
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            TowerController currentTowerController = currentPlacingTower.GetComponent<TowerController>();
+
+            if (MoneyManager.instance.PurchaseTower(currentTowerController))
             {
                 towerCollider.isTrigger = false;
 
-                //Stop showing the range of the tower
-                currentDrawRange.DisableRange();
-
-                //Stop showing the placement grid
-                gridPlane.SetActive(false);
-
-                //Stop holding the tower
-                currentPlacingTower = null;
+                PlaceTower(currentTowerController);
             }
         }
-        else
-        {
-            gridShaderMaterial.SetColor("_Color", unplacableGridColor);
-        }
-
-
-        //if (Input.GetMouseButtonDown(0)) {
-
-        //    BoxCollider towerCollider = currentPlacingTower.gameObject.GetComponent<BoxCollider>();
-        //    towerCollider.isTrigger = true;
-
-        //    Vector3 boxCenter = currentPlacingTower.transform.position;
-        //    Vector3 halfExtends = towerCollider.size / 2;
-
-        //    if (!Physics.CheckBox(boxCenter, halfExtends, Quaternion.identity, TowerLayer, QueryTriggerInteraction.Ignore))
-        //    {
-        //        towerCollider.isTrigger = false;
-
-        //        currentDrawRange.DisableRange();
-        //        currentPlacingTower = null;
-        //        gridPlane.SetActive(false);
-        //    }
-        //}
+  
     }
 
-    void OnDrawGizmos()
+    void PlaceTower(TowerController towerController)
     {
-        if(currentPlacingTower == null)
+        //Stop showing the range of the tower
+        currentDrawRange.DisableRange();
+
+        //Stop showing the placement grid
+        gridPlane.SetActive(false);
+
+        //Set state of the tower
+        if (towerController != null) {
+            towerController.isPlaced = true;
+        }
+
+        //Stop holding the tower
+        currentPlacingTower = null;
+    }
+
+    void DeselectTower()
+    {
+        if (currentPlacingTower == null)
         {
             return;
         }
 
-        BoxCollider towerCollider = currentPlacingTower.gameObject.GetComponent<BoxCollider>();
+        //Stop showing the placement grid
+        gridPlane.SetActive(false);
 
-        Vector3 halfExtends = towerCollider.size / 2;
+        //Destroy tower gameObject
+        Destroy(currentPlacingTower);
 
-        Gizmos.matrix = currentPlacingTower.transform.localToWorldMatrix;
-        Gizmos.DrawWireCube(Vector3.zero, towerCollider.size);
+        currentPlacingTower = null;
     }
 
     public void SetTowerToPlace(GameObject tower)
     {
-        currentPlacingTower = Instantiate(tower, Vector3.zero, Quaternion.identity);
-        currentDrawRange = currentPlacingTower.GetComponent<DrawRange>();
+        if(currentPlacingTower == null)
+        {
+            currentPlacingTower = Instantiate(tower, new Vector3(1000, 0, 0), Quaternion.identity);
+            currentDrawRange = currentPlacingTower.GetComponent<DrawRange>();
+        }
     }
 }

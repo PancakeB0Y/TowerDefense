@@ -5,14 +5,23 @@ using UnityEngine;
 
 public class BasicAttackBehaviour : AttackBehaviour
 {
-    float timePassed;
+    [Header("Prefabs")]
     [SerializeField] GameObject bulletPrefab;
+
+    float timePassed;
     HeadPivot headPivot;
 
     private void Start()
     {
         timePassed = attackSpeed;
         headPivot = GetComponentInChildren<HeadPivot>();
+
+        BulletController bulletController = bulletPrefab.GetComponent<BulletController>();
+
+        if(bulletController != null)
+        {
+            bulletController.SetBulletSpeed(bulletSpeed);
+        }
     }
 
     public override void Attack(GameObject target)

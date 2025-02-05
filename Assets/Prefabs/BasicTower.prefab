@@ -202,6 +202,7 @@ MonoBehaviour:
   attackBehaviour: {fileID: 0}
   targetingBehaviour: {fileID: 0}
   cost: 1
+  isPlaced: 0
 --- !u!114 &8087622615733752074
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -216,6 +217,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attack: 5
   attackSpeed: 0.3
+  bulletSpeed: 20
   bulletPrefab: {fileID: 2440277527145992946, guid: 02f7392ccfdab874eb93554a60567544, type: 3}
 --- !u!114 &3892857652770956116
 MonoBehaviour:
@@ -244,6 +246,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1dc700248b3ee7044b1e0d4bd8f57ef9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lineRendererMaterial: {fileID: 2100000, guid: 358e84bde5fce754b8bac04b72803a34, type: 2}
   renderRange: 0
   subdivisions: 20
 --- !u!1 &4706696072800402613

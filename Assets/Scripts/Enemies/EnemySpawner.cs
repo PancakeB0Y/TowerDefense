@@ -20,23 +20,18 @@ public class EnemySpawner : MonoBehaviour
 
     public static System.Action<GameObject> onEnemySpawned;
 
-    List<GameObject> enemiesToSpawn;
+    List<GameObject> enemiesToSpawn = new List<GameObject>();
     System.Random r = new System.Random();
 
     private void Awake()
     {
-        spawningBehaviour = GetComponent<SpawningBehaviour>();
-    }
-
-    void Start()
-    {
         targetPosition = GameObject.FindGameObjectWithTag("EnemyGoal").transform.position;
+
+        spawningBehaviour = GetComponent<SpawningBehaviour>();
 
         waves = GetComponents<WaveData>().ToList();
 
-        waves = waves.OrderBy(x=>x.index).ToList();
-
-        enemiesToSpawn = new List<GameObject>();
+        waves = waves.OrderBy(x => x.index).ToList();
     }
 
     private void OnEnable()

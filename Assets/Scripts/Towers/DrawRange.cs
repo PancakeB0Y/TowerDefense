@@ -5,8 +5,12 @@ using UnityEngine;
 
 public class DrawRange : MonoBehaviour
 {
+    [SerializeField] Material lineRendererMaterial;
+
+    [Header("Parameters")]
     [SerializeField] bool renderRange = false;
     [SerializeField] int subdivisions = 20;
+
     LineRenderer lineRenderer;
     float radius;
 
@@ -44,7 +48,7 @@ public class DrawRange : MonoBehaviour
     void SetupLineRenderer()
     {
         lineRenderer = gameObject.AddComponent<LineRenderer>();
-        lineRenderer.material = new Material(Shader.Find("Transparent/Diffuse"));
+        lineRenderer.material = lineRendererMaterial;
         lineRenderer.material.color = UnityEngine.Color.blue;
         lineRenderer.startColor = UnityEngine.Color.blue;
         lineRenderer.endColor = UnityEngine.Color.blue;
@@ -56,6 +60,11 @@ public class DrawRange : MonoBehaviour
 
     void DrawCircle()
     {
+        if(lineRenderer == null)
+        {
+            return;
+        }
+
         float angleStep = 2f * Mathf.PI / 10;
 
         for (int i = 0; i < lineRenderer.positionCount; i++)

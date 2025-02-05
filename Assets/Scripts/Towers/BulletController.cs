@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class BulletController : MonoBehaviour
 {
-    [SerializeField] float travelSpeed = 0.1f;
+    [Header("Properties")]
+    [SerializeField] float travelSpeed = 10f;
+
     public System.Action<GameObject> onHit;
 
     GameObject target;
@@ -17,8 +19,7 @@ public class BulletController : MonoBehaviour
             return;
         }
 
-        transform.position = Vector3.MoveTowards(transform.position, target.transform.position, travelSpeed);
-        
+        transform.position = Vector3.MoveTowards(transform.position, target.transform.position, travelSpeed * Time.deltaTime);
     }
 
     public void Shoot(GameObject target)
@@ -26,6 +27,10 @@ public class BulletController : MonoBehaviour
         this.target = target;
     }
 
+    public void SetBulletSpeed(float bulletSpeed)
+    {
+        travelSpeed = bulletSpeed;
+    }
 
     private void OnTriggerEnter(Collider other)
     {

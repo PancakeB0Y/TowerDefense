@@ -10,7 +10,7 @@ public class EnemyController : MonoBehaviour
     [Header("Behaviours")]
     [SerializeField] MoveBehaviour moveBehaviour;
 
-    [Header("Stats")]
+    [Header("Properties")]
     [SerializeField] HPModel hpModel;
     [SerializeField] float speed = 7;
     [SerializeField] int money = 0;

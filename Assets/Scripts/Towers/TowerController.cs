@@ -1,8 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
-using static UnityEngine.GraphicsBuffer;
 
 public class TowerController : MonoBehaviour
 {
@@ -10,8 +8,10 @@ public class TowerController : MonoBehaviour
     [SerializeField] AttackBehaviour attackBehaviour;
     [SerializeField] TargetingBehaviour targetingBehaviour;
 
-    [Header("Stats")]
-    [SerializeField] int cost = 1;
+    [Header("Properties")]
+    public int cost = 1;
+
+    [HideInInspector] public bool isPlaced = false;
 
     public System.Action onAttack;
 
@@ -23,6 +23,10 @@ public class TowerController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (!isPlaced) {
+            return;
+        }
+
         GetTargets();
 
         for (int i = targetingBehaviour.targets.Count - 1; i >= 0; i--)
