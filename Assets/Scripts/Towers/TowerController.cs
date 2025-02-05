@@ -10,6 +10,9 @@ public class TowerController : MonoBehaviour
     [SerializeField] AttackBehaviour attackBehaviour;
     [SerializeField] TargetingBehaviour targetingBehaviour;
 
+    [Header("Stats")]
+    [SerializeField] int cost = 1;
+
     public System.Action onAttack;
 
     void Awake()

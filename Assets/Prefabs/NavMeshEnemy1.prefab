@@ -274,6 +274,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hpBar: {fileID: 0}
+  textMesh: {fileID: 0}
 --- !u!1 &9003151504383579004
 GameObject:
   m_ObjectHideFlags: 0
@@ -287,8 +288,8 @@ GameObject:
   - component: {fileID: 3411688134805083729}
   - component: {fileID: 8572347477893724811}
   - component: {fileID: 1054401558750587258}
-  - component: {fileID: 6453571270104518456}
   - component: {fileID: 3349176785450811270}
+  - component: {fileID: 6453571270104518456}
   m_Layer: 7
   m_Name: NavMeshEnemy1
   m_TagString: Untagged
@@ -374,7 +375,7 @@ NavMeshAgent:
   m_Speed: 7
   m_Acceleration: 8
   avoidancePriority: 50
-  m_AngularSpeed: 180
+  m_AngularSpeed: 120
   m_StoppingDistance: 0
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
@@ -398,21 +399,7 @@ MonoBehaviour:
   moveBehaviour: {fileID: 0}
   hpModel: {fileID: 0}
   speed: 5
-  money: 20
---- !u!114 &6453571270104518456
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9003151504383579004}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cf5f5e600c2d36444b72648090c4585b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  targetRange: 0.2
-  agent: {fileID: 0}
+  money: 1
 --- !u!114 &3349176785450811270
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -429,3 +416,17 @@ MonoBehaviour:
     maxHP: 20
     currentHP: 20
   hpPresenter: {fileID: 0}
+--- !u!114 &6453571270104518456
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9003151504383579004}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf5f5e600c2d36444b72648090c4585b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetRange: 0.3
+  agent: {fileID: 0}

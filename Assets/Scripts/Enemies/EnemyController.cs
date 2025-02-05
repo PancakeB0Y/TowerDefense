@@ -78,7 +78,7 @@ public class EnemyController : MonoBehaviour
     void DropMoney()
     {
         //Get money from enemy death
-        MoneyModel.instance.GainMoney(money);
+        MoneyManager.instance.GainMoney(money);
     }
 
     public static void AddEnemy(GameObject enemy)

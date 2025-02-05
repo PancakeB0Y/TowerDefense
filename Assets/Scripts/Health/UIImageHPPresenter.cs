@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,10 +8,13 @@ using UnityEngine.UI;
 public class UIImageHPPresenter : AbstractHPPresenter
 {
     [SerializeField] Image hpBar;
+    [SerializeField] TextMeshProUGUI textMesh;
 
     private void Awake()
     {
         hpBar = GetComponent<Image>();
+        textMesh = GetComponentInChildren<TextMeshProUGUI>();
+
     }
 
     public override void PresentHP(HPData hpData)
@@ -18,6 +22,11 @@ public class UIImageHPPresenter : AbstractHPPresenter
         if (hpBar != null)
         {
             hpBar.fillAmount = (float)(hpData.currentHP) / (float)(hpData.maxHP);
+        }
+
+        if (textMesh != null)
+        {
+            textMesh.text = "HP: " + hpData.currentHP + "/" + hpData.maxHP;
         }
     }
 }

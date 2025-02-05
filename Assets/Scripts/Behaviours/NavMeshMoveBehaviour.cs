@@ -24,7 +24,8 @@ public class NavMeshMoveBehaviour : MoveBehaviour
     public override bool IsTargetReached()
     {
         float dist = agent.remainingDistance;
-        if (!agent.pathPending && dist != Mathf.Infinity && dist < targetRange)
+
+        if (dist!=0 && dist != Mathf.Infinity && dist < targetRange)
         {
             return true;
         }

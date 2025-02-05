@@ -9,11 +9,11 @@ public class WaveManager : MonoBehaviour
 
     [Header("Wave parameters")]
     [SerializeField] float waveInterval = 5f;
-    [SerializeField] int numberOfWaves = 3;
+    public int numberOfWaves = 3;
 
     [SerializeField] List<EnemySpawner> spawners;
 
-    int currentWave = 0;
+    public int currentWave = 0;
     WaitForSeconds waveIntervalWait;
 
     void Awake()

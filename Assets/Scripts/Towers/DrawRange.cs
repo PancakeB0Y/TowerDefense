@@ -10,12 +10,14 @@ public class DrawRange : MonoBehaviour
     LineRenderer lineRenderer;
     float radius;
 
+    private void Awake()
+    {
+        SetupLineRenderer();
+    }
+
     private void Start()
     {
-        lineRenderer = GetComponent<LineRenderer>();
         radius = GetComponent<TargetingBehaviour>().range;
-        
-        SetupLineRenderer();
 
         //Draw the range of the tower
         DrawCircle();
@@ -23,6 +25,11 @@ public class DrawRange : MonoBehaviour
 
     void Update()
     {
+        if(lineRenderer == null)
+        {
+            return;
+        }
+
         if (renderRange)
         {
             lineRenderer.enabled = true;
@@ -36,13 +43,15 @@ public class DrawRange : MonoBehaviour
     //Set up the parameters of the line renderer
     void SetupLineRenderer()
     {
+        lineRenderer = gameObject.AddComponent<LineRenderer>();
         lineRenderer.material = new Material(Shader.Find("Transparent/Diffuse"));
         lineRenderer.material.color = UnityEngine.Color.blue;
         lineRenderer.startColor = UnityEngine.Color.blue;
         lineRenderer.endColor = UnityEngine.Color.blue;
-        lineRenderer.startWidth = 0.2f;
-        lineRenderer.endWidth = 0.2f;
+        lineRenderer.startWidth = 0.15f;
+        lineRenderer.endWidth = 0.15f;
         lineRenderer.positionCount = subdivisions;
+        lineRenderer.enabled = true;
     }
 
     void DrawCircle()

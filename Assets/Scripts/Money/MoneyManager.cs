@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MoneyModel : MonoBehaviour
+public class MoneyManager : MonoBehaviour
 {
-    public static MoneyModel instance { get; private set; }
+    public static MoneyManager instance { get; private set; }
 
     [SerializeField] AbstractMoneyPresenter moneyPresenter;
 
