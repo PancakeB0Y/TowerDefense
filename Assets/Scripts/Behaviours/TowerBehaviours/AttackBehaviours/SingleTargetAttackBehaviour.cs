@@ -3,13 +3,15 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class BasicAttackBehaviour : AttackBehaviour
+public class SingleTargetAttackBehaviour : AttackBehaviour
 {
     [Header("Prefabs")]
     [SerializeField] GameObject bulletPrefab;
 
     float timePassed;
     HeadPivot headPivot;
+
+    GameObject curTarget;
 
     private void Start()
     {
@@ -31,19 +33,27 @@ public class BasicAttackBehaviour : AttackBehaviour
         if(timePassed >= attackSpeed)
         {
             timePassed = 0;
+
+            curTarget = target;
+
             GameObject newBullet = Instantiate(bulletPrefab, transform.position, Quaternion.identity);
             BulletController bulletController = newBullet.GetComponent<BulletController>();
             bulletController.onHit += TargetHit;
-            bulletController.Shoot(target);
+            bulletController.Shoot(curTarget);
         }
     }
 
-    void TargetHit(GameObject target)
+    void TargetHit()
     {
-        HPModel targetHPModel = target.GetComponent<HPModel>();
+        if (curTarget == null) {
+            return;
+        }
+
+        HPModel targetHPModel = curTarget.GetComponent<HPModel>();
 
         if (targetHPModel != null) { 
             targetHPModel.LoseHP(attack);
+            curTarget = null;
         }
     }
 }

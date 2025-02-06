@@ -11,8 +11,9 @@ GameObject:
   - component: {fileID: 2007880107197006313}
   - component: {fileID: 8126274318555312088}
   - component: {fileID: 7331100557519720095}
+  - component: {fileID: 2271251013580194917}
   m_Layer: 0
-  m_Name: Bullet
+  m_Name: FollowTargetBullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -67,7 +68,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6bbda214790cc9a47abb7f2d07c54e4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bulletTravelBehaviour: {fileID: 0}
   travelSpeed: 10
+--- !u!114 &2271251013580194917
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2440277527145992946}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb1581b02408a454d900cced0d038d63, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7534864632541241796
 GameObject:
   m_ObjectHideFlags: 0

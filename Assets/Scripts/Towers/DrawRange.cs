@@ -12,19 +12,10 @@ public class DrawRange : MonoBehaviour
     [SerializeField] int subdivisions = 20;
 
     LineRenderer lineRenderer;
-    float radius;
 
     private void Awake()
     {
         SetupLineRenderer();
-    }
-
-    private void Start()
-    {
-        radius = GetComponent<TargetingBehaviour>().range;
-
-        //Draw the range of the tower
-        DrawCircle();
     }
 
     void Update()
@@ -58,19 +49,21 @@ public class DrawRange : MonoBehaviour
         lineRenderer.enabled = true;
     }
 
-    void DrawCircle()
+    void DrawCircle(float range)
     {
         if(lineRenderer == null)
         {
             return;
         }
 
-        float angleStep = 2f * Mathf.PI / 10;
+        range *= 0.9f;
+
+        float angleStep = 2f * Mathf.PI / (subdivisions - 1);
 
         for (int i = 0; i < lineRenderer.positionCount; i++)
         {
-            float xPos = radius * Mathf.Cos(angleStep * i);
-            float zPos = radius * Mathf.Sin(angleStep * i);
+            float xPos = range * Mathf.Cos(angleStep * i);
+            float zPos = range * Mathf.Sin(angleStep * i);
 
             Vector3 pointInCircle = new Vector3(xPos, transform.position.y, zPos);
 
@@ -78,11 +71,11 @@ public class DrawRange : MonoBehaviour
         }
     }
 
-    public void RenderRange()
+    public void RenderRange(float range)
     {
         renderRange = true;
 
-        DrawCircle();
+        DrawCircle(range);
     }
 
     public void DisableRange()

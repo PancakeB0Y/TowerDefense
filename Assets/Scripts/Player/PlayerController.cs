@@ -6,22 +6,33 @@ using UnityEngine.UI;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] Button tower1Button;
+    [SerializeField] Button tower2Button;
+    [SerializeField] Button tower3Button;
 
     private void Update()
     {
-        if (Input.GetKeyUp(KeyCode.Alpha1))
+        if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            tower1Button.onClick.Invoke();
+            if (tower1Button != null)
+            {
+                tower1Button.onClick.Invoke();
+            }
         }
 
-        if (Input.GetKeyUp(KeyCode.Alpha2))
+        if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            //tower2Button.onClick.Invoke();
+            if (tower2Button != null)
+            {
+                tower2Button.onClick.Invoke();
+            }
         }
 
-        if (Input.GetKeyUp(KeyCode.Alpha3))
+        if (Input.GetKeyDown(KeyCode.Alpha3))
         {
-            //tower3Button.onClick.Invoke();
+            if (tower3Button != null)
+            {
+                tower3Button.onClick.Invoke();
+            }
         }
     }
 }

@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -7,6 +9,8 @@ using UnityEngine.Events;
 [RequireComponent(typeof(MoveBehaviour))]
 public class EnemyController : MonoBehaviour
 {
+    [SerializeField] Material slowEffectMaterial;
+
     [Header("Behaviours")]
     [SerializeField] MoveBehaviour moveBehaviour;
 
@@ -18,12 +22,16 @@ public class EnemyController : MonoBehaviour
     [Header("Events")]
     public static System.Action<GameObject> onTargetReached;
 
+    List<Renderer> renderers;
+
     public static List<GameObject> Enemies { get; private set; } = new List<GameObject>();
 
     private void Awake()
     {
         moveBehaviour = GetComponent<MoveBehaviour>();
         hpModel = GetComponent<HPModel>();
+
+        renderers = GetComponentsInChildren<Renderer>().ToList();
     }
 
     private void Start()
@@ -84,5 +92,65 @@ public class EnemyController : MonoBehaviour
     public static void AddEnemy(GameObject enemy)
     {
         Enemies.Add(enemy);
+    }
+
+    public void ApplySlow(float slowAmount, float slowDuration)
+    {
+        slowAmount = speed * (slowAmount / 100);
+
+        if (moveBehaviour != null)
+        {
+            moveBehaviour.SetSpeed(speed - slowAmount);
+            ApplySlowEffectMaterial();
+            StopAllCoroutines();
+            StartCoroutine(SlowCoroutine(slowDuration));
+        }
+    }
+
+    IEnumerator SlowCoroutine(float slowDuration)
+    {
+        yield return new WaitForSeconds(slowDuration);
+
+        moveBehaviour.SetSpeed(speed);
+        RemoveSlowEffectMaterial();
+        yield break;
+    }
+
+    void ApplySlowEffectMaterial()
+    {
+        if(slowEffectMaterial == null)
+        {
+            return;
+        }
+
+        for (int i = 0; i < renderers.Count; i++)
+        {
+            List<Material> matArray = renderers[i].materials.ToList();
+            if (matArray.Count == 1)
+            {
+                matArray.Add(slowEffectMaterial);
+            }
+            else if (matArray.Count > 1) {
+                matArray[1] = slowEffectMaterial;
+            }
+
+            renderers[i].materials = matArray.ToArray();
+        }
+    }
+
+    void RemoveSlowEffectMaterial()
+    {
+        if (slowEffectMaterial == null)
+        {
+            return;
+        }
+
+        for (int i = 0; i < renderers.Count; i++)
+        {
+            if(renderers[i].materials.Count() > 1)
+            {
+                Destroy(renderers[i].materials[1]);
+            }
+        }
     }
 }

@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class ClosestTargetingBehaviour : TargetingBehaviour
 {
+    [SerializeField] LayerMask EnemyLayer;
 
     public override void RemoveTarget(GameObject target)
     {
@@ -22,15 +24,17 @@ public class ClosestTargetingBehaviour : TargetingBehaviour
 
     GameObject GetClosestTarget()
     {
+        List<Collider> enemiesInRange = Physics.OverlapSphere(transform.position, range, EnemyLayer).ToList();
+
         GameObject closestTarget = null;
         float closestDistance = Mathf.Infinity;
-        foreach (GameObject enemy in EnemyController.Enemies)
+        foreach (Collider enemyCollider in enemiesInRange)
         {
-            float dist = Vector3.Magnitude(enemy.transform.position - transform.position);
-            if (dist < closestDistance && IsInRange(enemy.transform.position))
+            float dist = Vector3.Distance(enemyCollider.transform.position, transform.position);
+            if (dist < closestDistance)
             {
                 closestDistance = dist;
-                closestTarget = enemy;
+                closestTarget = enemyCollider.gameObject;
             }
         }
 

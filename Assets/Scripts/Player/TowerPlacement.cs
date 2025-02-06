@@ -1,10 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 
 public class TowerPlacement : MonoBehaviour
 {
+    public static TowerPlacement instance { get; private set; }
+
     [Header("Collision Layers")]
     [SerializeField] LayerMask ObstacleLayer;
     [SerializeField] LayerMask GroundLayer;
@@ -17,12 +20,28 @@ public class TowerPlacement : MonoBehaviour
     [SerializeField] Color gridColor = Color.white;
     [SerializeField] Color unplacableGridColor = Color.red;
 
+    [Header("UI Elements")]
+    [SerializeField] GameObject towerInfoUI;
+    TextMeshProUGUI towerInfoText;
+
     Material gridShaderMaterial;
 
     Camera playerCamera;
 
     GameObject currentPlacingTower;
-    DrawRange currentDrawRange;
+
+    void Awake()
+    {
+        //Ensure singleton
+        if (instance != null && instance != this)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            instance = this;
+        }
+    }
 
     void Start()
     {
@@ -31,6 +50,11 @@ public class TowerPlacement : MonoBehaviour
         if (gridPlane != null)
         {
             gridShaderMaterial = gridPlane.GetComponent<Renderer>().material;
+        }
+
+        if (towerInfoUI != null)
+        {
+            towerInfoText = towerInfoUI.GetComponentInChildren<TextMeshProUGUI>();
         }
     }
 
@@ -41,7 +65,7 @@ public class TowerPlacement : MonoBehaviour
             DeselectTower();
         }
 
-        if (currentPlacingTower == null || currentDrawRange == null)
+        if (currentPlacingTower == null)
         {
             return;
         }
@@ -49,10 +73,13 @@ public class TowerPlacement : MonoBehaviour
         gridPlane.SetActive(true);
         gridShaderMaterial.SetColor("_Color", gridColor);
 
+        TowerController currentTowerController = currentPlacingTower.GetComponent<TowerController>();
+
         Ray cameraRay = playerCamera.ScreenPointToRay(Input.mousePosition);
         RaycastHit hitInfo;
 
-        if(Physics.Raycast(cameraRay, out hitInfo, 100f, GroundLayer))
+        //Move tower to mouse position
+        if (Physics.Raycast(cameraRay, out hitInfo, 100f, GroundLayer))
         {
             //Map tower position to grid position
             Vector3Int gridPosition = grid.WorldToCell(hitInfo.point);
@@ -60,13 +87,17 @@ public class TowerPlacement : MonoBehaviour
             worldPosition = new Vector3(worldPosition.x + 0.6f, worldPosition.y, worldPosition.z + 0.6f);
             currentPlacingTower.transform.position = worldPosition;
 
-            currentDrawRange.RenderRange();
+            if (currentTowerController != null)
+            {
+                currentTowerController.ShowTowerRange();
+            }
         }
 
         BoxCollider towerCollider = currentPlacingTower.gameObject.GetComponent<BoxCollider>();
         Vector3 halfExtends = towerCollider.size / 2;
         towerCollider.isTrigger = true;
 
+        //Check if tower can be placed on the current position
         if (Physics.CheckBox(currentPlacingTower.transform.position, halfExtends, Quaternion.identity, ObstacleLayer, QueryTriggerInteraction.Ignore))
         {
             gridShaderMaterial.SetColor("_Color", unplacableGridColor);
@@ -75,8 +106,6 @@ public class TowerPlacement : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0))
         {
-            TowerController currentTowerController = currentPlacingTower.GetComponent<TowerController>();
-
             if (MoneyManager.instance.PurchaseTower(currentTowerController))
             {
                 towerCollider.isTrigger = false;
@@ -90,7 +119,7 @@ public class TowerPlacement : MonoBehaviour
     void PlaceTower(TowerController towerController)
     {
         //Stop showing the range of the tower
-        currentDrawRange.DisableRange();
+        towerController.HideTowerRange();
 
         //Stop showing the placement grid
         gridPlane.SetActive(false);
@@ -102,10 +131,22 @@ public class TowerPlacement : MonoBehaviour
 
         //Stop holding the tower
         currentPlacingTower = null;
+
+        if(towerInfoUI != null)
+        {
+            //Hide tower info
+            towerInfoUI.SetActive(false);
+        }
     }
 
     void DeselectTower()
     {
+        if (towerInfoUI != null)
+        {
+            //Hide tower info
+            towerInfoUI.SetActive(false);
+        }
+
         if (currentPlacingTower == null)
         {
             return;
@@ -122,10 +163,36 @@ public class TowerPlacement : MonoBehaviour
 
     public void SetTowerToPlace(GameObject tower)
     {
+        TowerSelector.instance.DeselectPreviousTower();
+
         if(currentPlacingTower == null)
         {
             currentPlacingTower = Instantiate(tower, new Vector3(1000, 0, 0), Quaternion.identity);
-            currentDrawRange = currentPlacingTower.GetComponent<DrawRange>();
         }
+        else
+        {
+            Destroy(currentPlacingTower);
+            currentPlacingTower = Instantiate(tower, new Vector3(1000, 0, 0), Quaternion.identity);
+        }
+
+        TowerController towerController = tower.GetComponent<TowerController>();
+
+        if (towerController == null) {
+            return;
+        }
+
+        if(towerInfoUI == null || towerInfoText == null)
+        {
+            return;
+        }
+
+        //Show tower info
+        towerInfoText.text = towerController.GetTowerInfo();
+        towerInfoUI.SetActive(true);
+    }
+
+    public bool IsPlacingTower()
+    {
+        return currentPlacingTower != null;
     }
 }

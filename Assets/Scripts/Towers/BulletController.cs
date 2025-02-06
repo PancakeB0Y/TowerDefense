@@ -4,12 +4,21 @@ using UnityEngine;
 
 public class BulletController : MonoBehaviour
 {
+    [Header("Behaviours")]
+    [SerializeField] AbstractBulletTravelBehaviour bulletTravelBehaviour;
+
     [Header("Properties")]
     [SerializeField] float travelSpeed = 10f;
 
-    public System.Action<GameObject> onHit;
+    public System.Action onHit;
+
 
     GameObject target;
+
+    private void Awake()
+    {
+        bulletTravelBehaviour = GetComponent<AbstractBulletTravelBehaviour>();
+    }
 
     private void Update()
     {
@@ -19,7 +28,8 @@ public class BulletController : MonoBehaviour
             return;
         }
 
-        transform.position = Vector3.MoveTowards(transform.position, target.transform.position, travelSpeed * Time.deltaTime);
+        bulletTravelBehaviour.TravelTowardsTarget(target, travelSpeed);
+        bulletTravelBehaviour.onTargetReached += TargetReached;
     }
 
     public void Shoot(GameObject target)
@@ -32,16 +42,29 @@ public class BulletController : MonoBehaviour
         travelSpeed = bulletSpeed;
     }
 
-    private void OnTriggerEnter(Collider other)
+    void TargetReached()
     {
-        EnemyController enemy = other.GetComponent<EnemyController>();
+        EnemyController enemy = target.GetComponent<EnemyController>();
 
-        if(enemy == null)
+        if (enemy == null)
         {
             return;
         }
 
-        onHit?.Invoke(other.gameObject);
+        onHit?.Invoke();
+        Destroy(gameObject);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        EnemyController enemy = other.GetComponent<EnemyController>();
+
+        if (enemy == null)
+        {
+            return;
+        }
+
+        onHit?.Invoke();
         Destroy(gameObject);
     }
 }

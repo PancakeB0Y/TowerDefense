@@ -50,11 +50,27 @@ public class MoneyManager : MonoBehaviour
         return tower.cost <= currentMoney;
     }
 
+    public bool CanPurchaseTowerUpgrade(TowerController tower)
+    {
+        return tower.upgradeCost <= currentMoney;
+    }
+
     public bool PurchaseTower(TowerController tower)
     {
         if (CanPurchaseTower(tower))
         {
             LoseMoney(tower.cost);
+            return true;
+        }
+
+        return false;
+    }
+
+    public bool PurchaseTowerUpgrade(TowerController tower)
+    {
+        if (CanPurchaseTowerUpgrade(tower))
+        {
+            LoseMoney(tower.upgradeCost);
             return true;
         }
 

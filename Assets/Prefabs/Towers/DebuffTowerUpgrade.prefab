@@ -72,8 +72,8 @@ Transform:
   m_GameObject: {fileID: 2415765867413855898}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.171, z: 0}
-  m_LocalScale: {x: 0.8339262, y: 0.8339262, z: 0.8339262}
+  m_LocalPosition: {x: 0, y: 1.316, z: -0.048067}
+  m_LocalScale: {x: 0.9872018, y: 0.9872018, z: 0.9872018}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7965691411999364155}
@@ -106,7 +106,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 4036f2ab1f2da444c8066007fd739a99, type: 2}
+  - {fileID: 2100000, guid: bc57ab4a572a2a843b53b1736f946a94, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -139,11 +139,11 @@ GameObject:
   - component: {fileID: 8732718276263611452}
   - component: {fileID: 1258367078732553178}
   - component: {fileID: 5433493721097396348}
-  - component: {fileID: 8087622615733752074}
+  - component: {fileID: -8514859463757326031}
   - component: {fileID: 3892857652770956116}
   - component: {fileID: 7690062065260018536}
   m_Layer: 6
-  m_Name: BasicTower
+  m_Name: DebuffTowerUpgrade
   m_TagString: Tower
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -199,11 +199,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db203754b21b1894dad26f7d8e35646c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  towerInfo: {fileID: 11400000, guid: 9435c3527d6934e4ca912d08b9976e9d, type: 2}
+  outlineShaderMaterial: {fileID: 2100000, guid: 02cab69da18df414cb19542c055ffdba, type: 2}
   attackBehaviour: {fileID: 0}
   targetingBehaviour: {fileID: 0}
+  towerRangeVisual: {fileID: 0}
   cost: 1
+  upgradeCost: 3
   isPlaced: 0
---- !u!114 &8087622615733752074
+--- !u!114 &-8514859463757326031
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -212,13 +216,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 4313913410030004158}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 17829c20640b51148b73061f55762afc, type: 3}
+  m_Script: {fileID: 11500000, guid: e0bcfe093c134804995c504231883116, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   attack: 5
-  attackSpeed: 0.3
+  attackSpeed: 0.8
   bulletSpeed: 20
   bulletPrefab: {fileID: 2440277527145992946, guid: 02f7392ccfdab874eb93554a60567544, type: 3}
+  slowAmountPercent: 50
+  slowDuration: 2
 --- !u!114 &3892857652770956116
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -231,9 +237,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67f4bb179f7dc054a862dfddaca273b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  range: 7
+  range: 8
   targetsCount: 1
   targets: []
+  EnemyLayer:
+    serializedVersion: 2
+    m_Bits: 128
 --- !u!114 &7690062065260018536
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -248,7 +257,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lineRendererMaterial: {fileID: 2100000, guid: 358e84bde5fce754b8bac04b72803a34, type: 2}
   renderRange: 0
-  subdivisions: 20
+  subdivisions: 30
 --- !u!1 &4706696072800402613
 GameObject:
   m_ObjectHideFlags: 0
@@ -276,8 +285,8 @@ Transform:
   m_GameObject: {fileID: 4706696072800402613}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.171, z: 0.553}
-  m_LocalScale: {x: 0.28218707, y: 0.23857191, z: 0.77373}
+  m_LocalPosition: {x: 0, y: 1.316, z: 0.6066}
+  m_LocalScale: {x: 0.33405304, y: 0.28242144, z: 0.91594154}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7965691411999364155}
@@ -310,7 +319,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 4036f2ab1f2da444c8066007fd739a99, type: 2}
+  - {fileID: 2100000, guid: bc57ab4a572a2a843b53b1736f946a94, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
