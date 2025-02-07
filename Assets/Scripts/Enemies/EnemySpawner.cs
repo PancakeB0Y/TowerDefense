@@ -84,7 +84,7 @@ public class EnemySpawner : MonoBehaviour
         GameObject enemyPrefab = enemiesToSpawn[enemiesToSpawn.Count - 1];
         enemiesToSpawn.RemoveAt(enemiesToSpawn.Count - 1);
 
-        GameObject newEnemy = Instantiate(enemyPrefab, transform.position, Quaternion.identity);
+        GameObject newEnemy = Instantiate(enemyPrefab, transform.position, transform.rotation);
         newEnemy.GetComponent<EnemyController>().SetTargetPosition(targetPosition);
         EnemyController.AddEnemy(newEnemy);
         //onEnemySpawned?.Invoke(newEnemy);

@@ -5,6 +5,13 @@ using UnityEngine;
 public class EnemyMoneyDrop : MonoBehaviour
 {
 
+    private void Update()
+    {
+        if(Time.timeScale == 0)
+        {
+            Destroy(gameObject);
+        }    
+    }
 
     public void ShowMoneyDrop()
     {

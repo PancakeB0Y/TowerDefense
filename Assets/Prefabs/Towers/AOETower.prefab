@@ -201,10 +201,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   towerInfo: {fileID: 11400000, guid: 010caad6f837f374181870db52012921, type: 2}
   outlineShaderMaterial: {fileID: 2100000, guid: 02cab69da18df414cb19542c055ffdba, type: 2}
-  attackBehaviour: {fileID: 0}
-  targetingBehaviour: {fileID: 0}
+  attackBehaviour: {fileID: 6863543172614301670}
+  targetingBehaviour: {fileID: 3892857652770956116}
   towerRangeVisual: {fileID: 0}
-  cost: 1
+  cost: 4
+  sellCost: 3
   upgradeCost: 3
   isPlaced: 0
 --- !u!114 &6863543172614301670

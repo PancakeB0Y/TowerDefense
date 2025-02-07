@@ -204,7 +204,9 @@ MonoBehaviour:
   attackBehaviour: {fileID: 0}
   targetingBehaviour: {fileID: 0}
   towerRangeVisual: {fileID: 0}
-  cost: 1
+  cost: 3
+  sellCost: 2
+  upgradeCost: 3
   isPlaced: 0
 --- !u!114 &-8514859463757326031
 MonoBehaviour:

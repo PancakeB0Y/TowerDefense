@@ -17,6 +17,7 @@ public class TowerController : MonoBehaviour
 
     [Header("Properties")]
     public int cost = 1;
+    public int sellCost = 1;
     public int upgradeCost = 3;
 
     [HideInInspector] public bool isPlaced = false;
@@ -105,14 +106,25 @@ public class TowerController : MonoBehaviour
     {
         if (MoneyManager.instance.PurchaseTowerUpgrade(this))
         {
+            //Instantiate upgraded tower
             GameObject upgradedTower = Instantiate(towerInfo.upgradePrefab, transform.position, transform.rotation);
             TowerController upgradedTowerController = upgradedTower.GetComponent<TowerController>();
             upgradedTowerController.isPlaced = true;
+
+            //Show the info for the new tower
             TowerSelector.instance.DeselectPreviousTower();
             TowerSelector.instance.SelectTower(upgradedTowerController);
 
+            //Destroy the old tower
             Destroy(gameObject);
         }
+    }
+
+    public void SellTower()
+    {
+        TowerSelector.instance.DeselectPreviousTower();
+        MoneyManager.instance.GainMoney(sellCost);
+        Destroy(gameObject);
     }
 
     //Tower selection functions

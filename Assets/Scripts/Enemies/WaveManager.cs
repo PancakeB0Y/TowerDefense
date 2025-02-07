@@ -96,6 +96,11 @@ public class WaveManager : MonoBehaviour
         }
     }
 
+    public bool isLastWaveSpawned()
+    {
+        return currentWave >= numberOfWaves;
+    }
+
     void StopSpawning()
     {
         StopAllCoroutines();

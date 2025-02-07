@@ -21,6 +21,7 @@ public class EnemyController : MonoBehaviour
 
     [Header("Events")]
     public static System.Action<GameObject> onTargetReached;
+    public static System.Action onLastEnemyDied;
 
     List<Renderer> renderers;
 
@@ -80,6 +81,12 @@ public class EnemyController : MonoBehaviour
     {
         //Remove enemy from scene
         Enemies.Remove(gameObject);
+
+        if (WaveManager.instance.isLastWaveSpawned() && Enemies.Count == 0)
+        {
+            onLastEnemyDied.Invoke();
+        }
+
         Destroy(gameObject);
     }
 

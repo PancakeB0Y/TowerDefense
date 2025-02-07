@@ -12,6 +12,8 @@ public class GameManager : MonoBehaviour
 
     [Header("UI Elements")]
     [SerializeField] GameObject pauseMenu;
+    [SerializeField] GameObject winMenu;
+    [SerializeField] GameObject loseMenu;
     [SerializeField] GameObject nextWaveTimer;
     TextMeshProUGUI nextWaveTimerText;
 
@@ -61,7 +63,7 @@ public class GameManager : MonoBehaviour
         if (WaveManager.instance != null)
         {
             WaveManager.instance.onWaveFinished += StartBuildPhase;
-            WaveManager.instance.onLastWaveFinished += GameWon;
+            EnemyController.onLastEnemyDied += GameWon;
         }
     }
 
@@ -75,7 +77,7 @@ public class GameManager : MonoBehaviour
         if (WaveManager.instance != null)
         {
             WaveManager.instance.onWaveFinished -= StartBuildPhase;
-            WaveManager.instance.onLastWaveFinished -= GameWon;
+            EnemyController.onLastEnemyDied -= GameWon;
         }
     }
 
@@ -152,21 +154,33 @@ public class GameManager : MonoBehaviour
 
     public void Quit()
     {
+        Time.timeScale = 1;
         Application.Quit();
     }
 
     public void NextScene()
     {
+        Time.timeScale = 1;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 
     void GameWon()
     {
-        Debug.Log("Game Won");
+        if (winMenu != null)
+        {
+            Time.timeScale = 0;
+            winMenu.SetActive(true);
+            previousTimeScale = 1;
+        }
     }
 
     void GameOver()
     {
-        Debug.Log("Game Over");
+        if (loseMenu != null) 
+        {
+            Time.timeScale = 0;
+            loseMenu.SetActive(true);
+            previousTimeScale = 1;
+        }
     }
 }

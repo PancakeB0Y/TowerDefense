@@ -16,6 +16,7 @@ public class TowerSelector : MonoBehaviour
     [Header("UI Elements")]
     [SerializeField] GameObject towerInfoUI;
     [SerializeField] GameObject towerUpgradeButtonUI;
+    [SerializeField] GameObject towerSellButtonUI;
 
     //Elements for detecting UI
     GraphicRaycaster graphicRaycaster;
@@ -24,7 +25,9 @@ public class TowerSelector : MonoBehaviour
 
     TextMeshProUGUI towerInfoText;
     TextMeshProUGUI towerUpgradeButtonText;
+    TextMeshProUGUI towerSellButtonText;
     Button towerUpgradeButton;
+    Button towerSellButton;
 
     Camera playerCamera;
 
@@ -59,6 +62,12 @@ public class TowerSelector : MonoBehaviour
         {
             towerUpgradeButtonText = towerUpgradeButtonUI.GetComponentInChildren<TextMeshProUGUI>();
             towerUpgradeButton = towerUpgradeButtonUI.GetComponentInChildren<Button>();
+        }
+
+        if (towerSellButtonUI != null)
+        {
+            towerSellButtonText = towerSellButtonUI.GetComponentInChildren<TextMeshProUGUI>();
+            towerSellButton = towerSellButtonUI.GetComponentInChildren<Button>();
         }
     }
 
@@ -148,15 +157,27 @@ public class TowerSelector : MonoBehaviour
         selectedTower.DeselectTower();
         selectedTower = null;
 
-        if (towerUpgradeButtonUI == null || towerUpgradeButton == null || towerUpgradeButtonText == null)
+        if (towerUpgradeButtonUI == null || towerUpgradeButton == null)
         {
             return;
         }
 
-        //Hide tower info and upgrade button
+        //Hide tower info
         towerInfoUI.SetActive(false);
+
+        //Hide upgrade button
         towerUpgradeButtonUI.SetActive(false);
         towerUpgradeButton.onClick.RemoveAllListeners();
+
+
+        if (towerSellButtonUI == null || towerSellButton == null)
+        {
+            return;
+        }
+
+        //Hide sell button
+        towerSellButtonUI.SetActive(false);
+        towerSellButton.onClick.RemoveAllListeners();
     }
 
     public void SelectTower(TowerController tower)
@@ -183,5 +204,28 @@ public class TowerSelector : MonoBehaviour
         towerUpgradeButtonText.text = tower.upgradeCost.ToString();
         towerUpgradeButton.onClick.AddListener(delegate { tower.UpgradeTower(); });
         towerUpgradeButtonUI.SetActive(true);
+
+        if (towerSellButtonUI == null || towerSellButton == null)
+        {
+            return;
+        }
+
+        //Show sell button
+        towerSellButtonText.text = "+$" + tower.sellCost.ToString();
+        towerSellButton.onClick.AddListener(delegate { tower.SellTower(); });
+        towerSellButtonUI.SetActive(true);
+    }
+
+    public void DisableUI()
+    {
+        if (towerUpgradeButtonUI == null || towerUpgradeButton == null || towerUpgradeButtonText == null)
+        {
+            return;
+        }
+
+        //Hide tower info and upgrade button
+        towerInfoUI.SetActive(false);
+        towerUpgradeButtonUI.SetActive(false);
+        towerUpgradeButton.onClick.RemoveAllListeners();
     }
 }
