@@ -46,11 +46,12 @@ public class IntervalSpawningBehaviour : SpawningBehaviour
     {
         if (spawnedEnemiesCount >= spawnCount)
         {
+            onWaveFinished?.Invoke();
             StopAllCoroutines();
             return;
         }
 
-        onSpawn.Invoke();
+        onSpawn?.Invoke();
         UpdateSpawnCount();
     }
 

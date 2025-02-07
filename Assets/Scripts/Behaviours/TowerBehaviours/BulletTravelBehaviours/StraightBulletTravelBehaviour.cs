@@ -17,7 +17,7 @@ public class StraightBulletTravelBehaviour : AbstractBulletTravelBehaviour
 
         if (isTargetReached())
         {
-            onTargetReached.Invoke();
+            onTargetReached?.Invoke();
         }
     }
 

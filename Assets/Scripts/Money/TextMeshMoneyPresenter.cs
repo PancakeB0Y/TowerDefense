@@ -16,7 +16,7 @@ public class TextMeshMoneyPresenter : AbstractMoneyPresenter
     {
         if (textMesh != null)
         {
-            textMesh.text = "Money: " + money.ToString();
+            textMesh.text = "Money: $" + money.ToString();
         }
     }
 }

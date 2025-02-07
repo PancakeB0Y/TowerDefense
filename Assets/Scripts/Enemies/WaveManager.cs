@@ -14,6 +14,10 @@ public class WaveManager : MonoBehaviour
     [SerializeField] List<EnemySpawner> spawners;
 
     public int currentWave = 0;
+
+    public System.Action onWaveFinished;
+    public System.Action onLastWaveFinished;
+
     WaitForSeconds waveIntervalWait;
 
     void Awake()
@@ -37,13 +41,35 @@ public class WaveManager : MonoBehaviour
         GameObject[] spawnerObjects = GameObject.FindGameObjectsWithTag("EnemySpawner");
         for (int i = 0; i < spawnerObjects.Length; i++)
         {
-            spawners.Add(spawnerObjects[i].GetComponent<EnemySpawner>());
+            EnemySpawner curEnemySpawner = spawnerObjects[i].GetComponent<EnemySpawner>();
+            if (curEnemySpawner != null)
+            {
+                spawners.Add(curEnemySpawner);
+            }
         }
 
         currentWave = 0;
 
         waveIntervalWait = new WaitForSeconds(waveInterval);
-        StartCoroutine(SpawnWavesCoroutine());
+    }
+
+    private void OnEnable()
+    {
+        EnemySpawner.onWaveFinished += FinishWave;
+    }
+
+    private void OnDisable()
+    {
+        EnemySpawner.onWaveFinished -= FinishWave;
+    }
+
+    public void StartNextWave()
+    {
+        foreach (EnemySpawner spawner in spawners)
+        {
+            spawner.StartSpawning(currentWave);
+        }
+        UpdateWaveCount();
     }
 
     IEnumerator SpawnWavesCoroutine()
@@ -66,6 +92,7 @@ public class WaveManager : MonoBehaviour
         if (currentWave >= numberOfWaves)
         {
             StopSpawning();
+            onLastWaveFinished?.Invoke();
         }
     }
 
@@ -76,5 +103,10 @@ public class WaveManager : MonoBehaviour
         {
             spawner.StopSpawning();
         }
+    }
+
+    void FinishWave()
+    {
+        onWaveFinished?.Invoke();
     }
 }

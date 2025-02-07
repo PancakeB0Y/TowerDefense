@@ -15,7 +15,7 @@ public class PlayerController : MonoBehaviour
         {
             if (tower1Button != null)
             {
-                tower1Button.onClick.Invoke();
+                tower1Button.onClick?.Invoke();
             }
         }
 
@@ -23,7 +23,7 @@ public class PlayerController : MonoBehaviour
         {
             if (tower2Button != null)
             {
-                tower2Button.onClick.Invoke();
+                tower2Button.onClick?.Invoke();
             }
         }
 
@@ -31,7 +31,7 @@ public class PlayerController : MonoBehaviour
         {
             if (tower3Button != null)
             {
-                tower3Button.onClick.Invoke();
+                tower3Button.onClick?.Invoke();
             }
         }
     }

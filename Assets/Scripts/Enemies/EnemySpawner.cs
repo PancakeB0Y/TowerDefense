@@ -19,6 +19,7 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] List<WaveData> waves;
 
     public static System.Action<GameObject> onEnemySpawned;
+    public static System.Action onWaveFinished;
 
     List<GameObject> enemiesToSpawn = new List<GameObject>();
     System.Random r = new System.Random();
@@ -37,6 +38,13 @@ public class EnemySpawner : MonoBehaviour
     private void OnEnable()
     {
         spawningBehaviour.onSpawn += SpawnEnemy; 
+        spawningBehaviour.onWaveFinished += FinishWave; 
+    }
+
+    private void OnDisable()
+    {
+        spawningBehaviour.onSpawn -= SpawnEnemy;
+        spawningBehaviour.onWaveFinished -= FinishWave;
     }
 
     public void StartSpawning(int waveIndex)
@@ -51,11 +59,6 @@ public class EnemySpawner : MonoBehaviour
     public void StopSpawning()
     {
         spawningBehaviour.StopSpawning();
-    }
-
-    private void OnDisable()
-    {
-        spawningBehaviour.onSpawn -= SpawnEnemy;
     }
 
     void UpdateEnemiesToSpawn(int waveIndex)
@@ -85,5 +88,10 @@ public class EnemySpawner : MonoBehaviour
         newEnemy.GetComponent<EnemyController>().SetTargetPosition(targetPosition);
         EnemyController.AddEnemy(newEnemy);
         //onEnemySpawned?.Invoke(newEnemy);
+    }
+
+    void FinishWave()
+    {
+        onWaveFinished?.Invoke();
     }
 }

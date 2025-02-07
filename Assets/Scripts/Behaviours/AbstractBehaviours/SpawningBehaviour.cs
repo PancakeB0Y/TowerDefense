@@ -8,6 +8,7 @@ public abstract class SpawningBehaviour : MonoBehaviour
     protected float spawnInterval = 1f;
 
     public System.Action onSpawn;
+    public System.Action onWaveFinished;
 
     public abstract void StartSpawning();
     public abstract void StopSpawning();

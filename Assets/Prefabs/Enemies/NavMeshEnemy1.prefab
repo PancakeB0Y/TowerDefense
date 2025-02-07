@@ -397,6 +397,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slowEffectMaterial: {fileID: 2100000, guid: 8ec45ea4507ad5748bbef3818e0aff60, type: 2}
+  moneyDropPrefab: {fileID: 9221113544093480365, guid: dc5da1132b5031542967b64d105486a6, type: 3}
   moveBehaviour: {fileID: 0}
   hpModel: {fileID: 0}
   speed: 5

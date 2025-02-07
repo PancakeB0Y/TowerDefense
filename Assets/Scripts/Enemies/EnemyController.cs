@@ -17,7 +17,7 @@ public class EnemyController : MonoBehaviour
     [Header("Properties")]
     [SerializeField] HPModel hpModel;
     [SerializeField] float speed = 7;
-    [SerializeField] int money = 0;
+    [SerializeField] public int money = 0;
 
     [Header("Events")]
     public static System.Action<GameObject> onTargetReached;
@@ -87,6 +87,8 @@ public class EnemyController : MonoBehaviour
     {
         //Get money from enemy death
         MoneyManager.instance.GainMoney(money);
+
+        MoneyDropManager.instance.ShowMoney(this);
     }
 
     public static void AddEnemy(GameObject enemy)
