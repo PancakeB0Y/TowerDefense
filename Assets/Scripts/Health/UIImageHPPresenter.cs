@@ -26,7 +26,7 @@ public class UIImageHPPresenter : AbstractHPPresenter
 
         if (textMesh != null)
         {
-            textMesh.text = "HP: " + hpData.currentHP + "/" + hpData.maxHP;
+            textMesh.text = hpData.currentHP + "/" + hpData.maxHP;
         }
     }
 }

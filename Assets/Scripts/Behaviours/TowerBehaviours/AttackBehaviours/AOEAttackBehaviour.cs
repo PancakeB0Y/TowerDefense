@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using static UnityEngine.ParticleSystem;
 
 public class AOEAttackBehaviour : AttackBehaviour
 {
     [Header("Prefabs")]
     [SerializeField] GameObject bulletPrefab;
-    [SerializeField] GameObject explosionPrefab;
+    [SerializeField] GameObject explosionParticlePrefab;
 
     [Header("Properties")]
     [SerializeField] float AOERadius = 3;
@@ -19,6 +20,9 @@ public class AOEAttackBehaviour : AttackBehaviour
 
     Vector3 curTarget = Vector3.zero;
 
+    ParticleSystem explosionParticleInstance;
+
+    private ParticleSystem.MainModule pMain;
 
     private void Start()
     {
@@ -31,10 +35,6 @@ public class AOEAttackBehaviour : AttackBehaviour
         {
             bulletController.SetBulletSpeed(bulletSpeed);
         }
-
-        explosionPrefab = Instantiate(explosionPrefab);
-        explosionPrefab.SetActive(false);
-        explosionPrefab.transform.localScale = new Vector3(AOERadius, AOERadius, AOERadius);
     }
 
     public override void Attack(GameObject target)
@@ -44,8 +44,6 @@ public class AOEAttackBehaviour : AttackBehaviour
         if(timePassed >= attackSpeed)
         {
             timePassed = 0;
-
-            explosionPrefab.SetActive(false);
 
             curTarget = target.transform.position;
 
@@ -63,8 +61,7 @@ public class AOEAttackBehaviour : AttackBehaviour
             return;
         }
 
-        explosionPrefab.transform.position = curTarget;
-        explosionPrefab.SetActive(true);
+        SpawnExplosionParticle(curTarget);
 
         List<Collider> enemiesHit = Physics.OverlapSphere(curTarget, AOERadius, TargetLayer).ToList();
 
@@ -80,5 +77,12 @@ public class AOEAttackBehaviour : AttackBehaviour
         }
 
         curTarget = Vector3.zero;
+    }
+
+    void SpawnExplosionParticle(Vector3 targetPosition)
+    {
+        ParticleSystem prefabParticleSystem = Instantiate(explosionParticlePrefab, targetPosition, Quaternion.identity).GetComponent<ParticleSystem>();
+        var main = prefabParticleSystem.main;
+        main.startSize = new ParticleSystem.MinMaxCurve(AOERadius, AOERadius);
     }
 }

@@ -134,15 +134,15 @@ public class EnemyController : MonoBehaviour
 
         for (int i = 0; i < renderers.Count; i++)
         {
-            List<Material> matArray = renderers[i].materials.ToList();
-            if (matArray.Count == 1)
+            //Create a copy of the materials and add the shader material
+            List<Material> matArray = renderers[i].sharedMaterials.ToList();
+
+            if (matArray[matArray.Count - 1] != slowEffectMaterial)
             {
                 matArray.Add(slowEffectMaterial);
             }
-            else if (matArray.Count > 1) {
-                matArray[1] = slowEffectMaterial;
-            }
 
+            //Assign the new material list
             renderers[i].materials = matArray.ToArray();
         }
     }
@@ -158,7 +158,14 @@ public class EnemyController : MonoBehaviour
         {
             if(renderers[i].materials.Count() > 1)
             {
-                Destroy(renderers[i].materials[1]);
+                //Create a copy of the materials and remove the last material
+                List<Material> matArray = renderers[i].materials.ToList();
+                matArray.RemoveAt(matArray.Count - 1);
+
+                Destroy(renderers[i].materials[renderers[i].materials.Count() - 1]);
+
+                //Assign the new material list
+                renderers[i].materials = matArray.ToArray();
             }
         }
     }
