@@ -41,7 +41,7 @@ public class TowerController : MonoBehaviour
             return;
         }
 
-        GetTargets();
+        UpdateTargets();
 
         for (int i = targetingBehaviour.targets.Count - 1; i >= 0; i--)
         {
@@ -57,7 +57,7 @@ public class TowerController : MonoBehaviour
         }
     }
 
-    public void GetTargets()
+    public void UpdateTargets()
     {
         if (targetingBehaviour != null)
         {

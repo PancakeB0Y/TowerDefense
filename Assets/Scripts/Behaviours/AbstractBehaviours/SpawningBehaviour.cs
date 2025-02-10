@@ -14,4 +14,6 @@ public abstract class SpawningBehaviour : MonoBehaviour
     public abstract void StopSpawning();
 
     public abstract void SetWaveData(WaveData waveData);
+
+    protected abstract void Spawn();
 }

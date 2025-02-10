@@ -9,8 +9,8 @@ public class TowerPlacement : MonoBehaviour
     public static TowerPlacement instance { get; private set; }
 
     [Header("Collision Layers")]
-    [SerializeField] LayerMask ObstacleLayer;
-    [SerializeField] LayerMask GroundLayer;
+    [SerializeField] LayerMask obstacleLayer;
+    [SerializeField] LayerMask groundLayer;
 
     [Header("Grid Objects")]
     [SerializeField] Grid grid;
@@ -79,7 +79,7 @@ public class TowerPlacement : MonoBehaviour
         RaycastHit hitInfo;
 
         //Move tower to mouse position
-        if (Physics.Raycast(cameraRay, out hitInfo, 100f, GroundLayer))
+        if (Physics.Raycast(cameraRay, out hitInfo, 100f, groundLayer))
         {
             //Map tower position to grid position
             Vector3Int gridPosition = grid.WorldToCell(hitInfo.point);
@@ -98,7 +98,7 @@ public class TowerPlacement : MonoBehaviour
         towerCollider.isTrigger = true;
 
         //Check if tower can be placed on the current position
-        if (Physics.CheckBox(currentPlacingTower.transform.position, halfExtends, Quaternion.identity, ObstacleLayer, QueryTriggerInteraction.Ignore))
+        if (Physics.CheckBox(currentPlacingTower.transform.position, halfExtends, Quaternion.identity, obstacleLayer, QueryTriggerInteraction.Ignore))
         {
             gridShaderMaterial.SetColor("_Color", unplacableGridColor);
             return;

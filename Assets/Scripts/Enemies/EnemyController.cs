@@ -17,7 +17,7 @@ public class EnemyController : MonoBehaviour
     [Header("Properties")]
     [SerializeField] HPModel hpModel;
     [SerializeField] float speed = 7;
-    [SerializeField] public int money = 0;
+    public int money = 0;
 
     [Header("Events")]
     public static System.Action<GameObject> onTargetReached;

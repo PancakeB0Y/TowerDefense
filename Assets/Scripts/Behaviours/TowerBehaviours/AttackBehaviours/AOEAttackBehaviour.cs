@@ -49,12 +49,12 @@ public class AOEAttackBehaviour : AttackBehaviour
 
             GameObject newBullet = Instantiate(bulletPrefab, transform.position, Quaternion.identity);
             BulletController bulletController = newBullet.GetComponent<BulletController>();
-            bulletController.onHit += TargetHit;
+            bulletController.onHit += HandleTargetHit;
             bulletController.Shoot(target);
         }
     }
 
-    void TargetHit()
+    void HandleTargetHit()
     {
         if (curTarget == Vector3.zero)
         {

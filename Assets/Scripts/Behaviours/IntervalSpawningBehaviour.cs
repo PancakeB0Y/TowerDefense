@@ -42,7 +42,7 @@ public class IntervalSpawningBehaviour : SpawningBehaviour
         }
     }
 
-    void Spawn()
+    protected override void Spawn()
     {
         if (spawnedEnemiesCount >= spawnCount)
         {

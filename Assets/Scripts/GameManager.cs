@@ -58,14 +58,14 @@ public class GameManager : MonoBehaviour
     {
         if (BaseController.instance != null)
         {
-            BaseController.instance.onBaseDeath += GameOver;
+            BaseController.instance.onBaseDeath += HandleGameLost;
         }
 
         if (WaveManager.instance != null)
         {
             WaveManager.instance.onWaveFinished += StartBuildPhase;
-            WaveManager.instance.onLastWaveFinished += LastWaveSpawned;
-            EnemyController.onLastEnemyDied += GameWon;
+            WaveManager.instance.onLastWaveFinished += HandleLastWave;
+            EnemyController.onLastEnemyDied += HandleGameWon;
         }
     }
 
@@ -73,14 +73,14 @@ public class GameManager : MonoBehaviour
     {
         if (BaseController.instance != null)
         {
-            BaseController.instance.onBaseDeath -= GameOver;
+            BaseController.instance.onBaseDeath -= HandleGameLost;
         }
 
         if (WaveManager.instance != null)
         {
             WaveManager.instance.onWaveFinished -= StartBuildPhase;
-            WaveManager.instance.onLastWaveFinished -= LastWaveSpawned;
-            EnemyController.onLastEnemyDied -= GameWon;
+            WaveManager.instance.onLastWaveFinished -= HandleLastWave;
+            EnemyController.onLastEnemyDied -= HandleGameWon;
         }
     }
 
@@ -121,7 +121,7 @@ public class GameManager : MonoBehaviour
         yield break;
     }
 
-    void LastWaveSpawned()
+    void HandleLastWave()
     {
         nextWaveTimerText.text = "Last wave spawned";
         isPaused = false;
@@ -169,13 +169,13 @@ public class GameManager : MonoBehaviour
         Application.Quit();
     }
 
-    public void NextScene()
+    public void GoToNextScene()
     {
         Time.timeScale = 1;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 
-    void GameWon()
+    void HandleGameWon()
     {
         if (winMenu != null)
         {
@@ -185,7 +185,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    void GameOver()
+    void HandleGameLost()
     {
         if (loseMenu != null) 
         {

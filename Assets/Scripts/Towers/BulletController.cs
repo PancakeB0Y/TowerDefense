@@ -12,7 +12,6 @@ public class BulletController : MonoBehaviour
 
     public System.Action onHit;
 
-
     GameObject target;
 
     private void Awake()
@@ -29,7 +28,7 @@ public class BulletController : MonoBehaviour
         }
 
         bulletTravelBehaviour.TravelTowardsTarget(target, travelSpeed);
-        bulletTravelBehaviour.onTargetReached += TargetReached;
+        bulletTravelBehaviour.onTargetReached += HandleTargetReached;
     }
 
     public void Shoot(GameObject target)
@@ -42,7 +41,7 @@ public class BulletController : MonoBehaviour
         travelSpeed = bulletSpeed;
     }
 
-    void TargetReached()
+    void HandleTargetReached()
     {
         EnemyController enemy = target.GetComponent<EnemyController>();
 
@@ -55,7 +54,7 @@ public class BulletController : MonoBehaviour
         Destroy(gameObject);
     }
 
-    private void OnTriggerEnter(Collider other)
+    void OnTriggerEnter(Collider other)
     {
         EnemyController enemy = other.GetComponent<EnemyController>();
 
