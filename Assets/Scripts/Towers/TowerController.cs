@@ -20,7 +20,7 @@ public class TowerController : MonoBehaviour
     public int sellCost = 1;
     public int upgradeCost = 3;
 
-    [HideInInspector] public bool isPlaced = false;
+    public bool isPlaced = false;
 
     public System.Action onAttack;
 

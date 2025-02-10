@@ -16,6 +16,15 @@ public class DrawRange : MonoBehaviour
     private void Awake()
     {
         SetupLineRenderer();
+
+        if (renderRange)
+        {
+            TargetingBehaviour targetingBehaviour = GetComponent<TargetingBehaviour>();
+            if (targetingBehaviour != null)
+            {
+                DrawCircle(targetingBehaviour.GetRange());
+            }
+        }
     }
 
     void Update()

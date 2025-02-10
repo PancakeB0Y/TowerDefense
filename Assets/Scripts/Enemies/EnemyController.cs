@@ -82,9 +82,10 @@ public class EnemyController : MonoBehaviour
         //Remove enemy from scene
         Enemies.Remove(gameObject);
 
-        if (WaveManager.instance.isLastWaveSpawned() && Enemies.Count == 0)
+        //Check if the last enemy left in the game died
+        if (WaveManager.instance != null && WaveManager.instance.isLastWaveSpawned() && Enemies.Count == 0)
         {
-            onLastEnemyDied.Invoke();
+            onLastEnemyDied?.Invoke();
         }
 
         Destroy(gameObject);
@@ -92,10 +93,16 @@ public class EnemyController : MonoBehaviour
 
     void DropMoney()
     {
-        //Get money from enemy death
-        MoneyManager.instance.GainMoney(money);
-
-        MoneyDropManager.instance.ShowMoney(this);
+        if(MoneyManager.instance != null)
+        {
+            //Get money from enemy death
+            MoneyManager.instance.GainMoney(money);
+        }
+        
+        if(MoneyDropManager.instance != null)
+        {
+            MoneyDropManager.instance.ShowMoney(this);
+        }
     }
 
     public static void AddEnemy(GameObject enemy)

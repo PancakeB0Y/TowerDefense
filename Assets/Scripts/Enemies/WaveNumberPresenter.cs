@@ -19,7 +19,7 @@ public class WaveNumberPresenter : MonoBehaviour
 
     void PresentWaveNumber()
     {
-        if (textMesh != null)
+        if (textMesh != null && WaveManager.instance != null)
         {
             textMesh.text = "Wave: " + WaveManager.instance.currentWave + "/" + WaveManager.instance.numberOfWaves;
         }

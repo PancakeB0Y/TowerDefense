@@ -22,7 +22,7 @@ public class EnemySpawner : MonoBehaviour
     public static System.Action onWaveFinished;
 
     List<GameObject> enemiesToSpawn = new List<GameObject>();
-    System.Random r = new System.Random();
+    System.Random random = new System.Random();
 
     private void Awake()
     {
@@ -76,7 +76,7 @@ public class EnemySpawner : MonoBehaviour
         }
 
         //Order the list randomly
-        enemiesToSpawn = enemiesToSpawn.OrderBy(x => r.Next()).ToList();
+        enemiesToSpawn = enemiesToSpawn.OrderBy(x => random.Next()).ToList();
     }
 
     void SpawnEnemy()
@@ -87,7 +87,6 @@ public class EnemySpawner : MonoBehaviour
         GameObject newEnemy = Instantiate(enemyPrefab, transform.position, transform.rotation);
         newEnemy.GetComponent<EnemyController>().SetTargetPosition(targetPosition);
         EnemyController.AddEnemy(newEnemy);
-        //onEnemySpawned?.Invoke(newEnemy);
     }
 
     void FinishWave()

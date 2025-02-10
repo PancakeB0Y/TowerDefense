@@ -18,7 +18,10 @@ public class NavMeshMoveBehaviour : MoveBehaviour
     {
         base.SetTargetPosition(targetPosition);
 
-        agent.SetDestination(targetPosition);
+        if (agent != null)
+        {
+            agent.SetDestination(targetPosition);
+        }
     }
 
     public override bool IsTargetReached()
@@ -38,6 +41,6 @@ public class NavMeshMoveBehaviour : MoveBehaviour
     public override void SetSpeed(float speed)
     {
         agent.speed = speed;
-        agent.acceleration = speed;
+        agent.acceleration = speed * 2;
     }
 }

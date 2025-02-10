@@ -14,7 +14,6 @@ public class UIImageHPPresenter : AbstractHPPresenter
     {
         hpBar = GetComponent<Image>();
         textMesh = GetComponentInChildren<TextMeshProUGUI>();
-
     }
 
     public override void PresentHP(HPData hpData)

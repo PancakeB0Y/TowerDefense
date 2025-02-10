@@ -8,17 +8,17 @@ public class WaveManager : MonoBehaviour
     public static WaveManager instance { get; private set; }
 
     [Header("Wave parameters")]
-    [SerializeField] float waveInterval = 5f;
     public int numberOfWaves = 3;
 
     [SerializeField] List<EnemySpawner> spawners;
 
-    public int currentWave = 0;
+    [HideInInspector] public int currentWave { get; private set; } = 0;
+
+    //For Unit Test
+    [SerializeField] bool spawnOnStart = false;
 
     public System.Action onWaveFinished;
     public System.Action onLastWaveFinished;
-
-    WaitForSeconds waveIntervalWait;
 
     void Awake()
     {
@@ -50,7 +50,10 @@ public class WaveManager : MonoBehaviour
 
         currentWave = 0;
 
-        waveIntervalWait = new WaitForSeconds(waveInterval);
+        if (spawnOnStart)
+        {
+            StartNextWave();
+        }
     }
 
     private void OnEnable()
@@ -65,6 +68,11 @@ public class WaveManager : MonoBehaviour
 
     public void StartNextWave()
     {
+        if (isLastWaveSpawned()) {
+            StopSpawning();
+            return;
+        }
+
         foreach (EnemySpawner spawner in spawners)
         {
             spawner.StartSpawning(currentWave);
@@ -72,28 +80,9 @@ public class WaveManager : MonoBehaviour
         UpdateWaveCount();
     }
 
-    IEnumerator SpawnWavesCoroutine()
-    {
-        while (true)
-        {
-            foreach (EnemySpawner spawner in spawners)
-            {
-                spawner.StartSpawning(currentWave);
-            }
-            UpdateWaveCount();
-
-            yield return waveIntervalWait;
-        }
-    }
-
     void UpdateWaveCount()
     {
         currentWave++;
-        if (currentWave >= numberOfWaves)
-        {
-            StopSpawning();
-            onLastWaveFinished?.Invoke();
-        }
     }
 
     public bool isLastWaveSpawned()
@@ -112,6 +101,13 @@ public class WaveManager : MonoBehaviour
 
     void FinishWave()
     {
+        if (isLastWaveSpawned())
+        {
+            StopSpawning();
+            onLastWaveFinished?.Invoke();
+            return;
+        }
+
         onWaveFinished?.Invoke();
     }
 }

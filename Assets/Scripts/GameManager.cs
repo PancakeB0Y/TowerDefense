@@ -37,6 +37,7 @@ public class GameManager : MonoBehaviour
         }
 
         isPaused = false;
+        isBuildPhase = true;
         previousTimeScale = 1;
     }
 
@@ -63,6 +64,7 @@ public class GameManager : MonoBehaviour
         if (WaveManager.instance != null)
         {
             WaveManager.instance.onWaveFinished += StartBuildPhase;
+            WaveManager.instance.onLastWaveFinished += LastWaveSpawned;
             EnemyController.onLastEnemyDied += GameWon;
         }
     }
@@ -77,6 +79,7 @@ public class GameManager : MonoBehaviour
         if (WaveManager.instance != null)
         {
             WaveManager.instance.onWaveFinished -= StartBuildPhase;
+            WaveManager.instance.onLastWaveFinished -= LastWaveSpawned;
             EnemyController.onLastEnemyDied -= GameWon;
         }
     }
@@ -110,12 +113,20 @@ public class GameManager : MonoBehaviour
             yield return new WaitForSeconds(1);
         }
 
-        nextWaveTimerText.text = "Wave In Progress...";
+        nextWaveTimerText.text = "Spawning Wave...";
 
         WaveManager.instance.StartNextWave();
         isBuildPhase = false;
 
         yield break;
+    }
+
+    void LastWaveSpawned()
+    {
+        nextWaveTimerText.text = "Last wave spawned";
+        isPaused = false;
+        isBuildPhase = true;
+        previousTimeScale = 1;
     }
 
     void TogglePauseMenu()

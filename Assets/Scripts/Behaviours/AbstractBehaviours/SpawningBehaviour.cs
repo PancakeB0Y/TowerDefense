@@ -5,7 +5,7 @@ using UnityEngine;
 public abstract class SpawningBehaviour : MonoBehaviour
 {
     [Header("Spawn parameters")]
-    protected float spawnInterval = 1f;
+    [SerializeField] protected float spawnInterval = 1f;
 
     public System.Action onSpawn;
     public System.Action onWaveFinished;

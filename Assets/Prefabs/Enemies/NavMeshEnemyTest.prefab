@@ -291,7 +291,7 @@ GameObject:
   - component: {fileID: 3349176785450811270}
   - component: {fileID: 6453571270104518456}
   m_Layer: 7
-  m_Name: NavMeshEnemy1
+  m_Name: NavMeshEnemyTest
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -415,8 +415,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hpData:
-    maxHP: 20
-    currentHP: 20
+    maxHP: 2
+    currentHP: 2
   hpPresenter: {fileID: 0}
 --- !u!114 &6453571270104518456
 MonoBehaviour:
