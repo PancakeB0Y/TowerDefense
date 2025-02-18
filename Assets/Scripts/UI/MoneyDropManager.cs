@@ -7,6 +7,7 @@ public class MoneyDropManager : MonoBehaviour
 {
     public static MoneyDropManager instance { get; private set; }
 
+    [Header("Prefabs")]
     [SerializeField] GameObject moneyDropPrefab;
     Canvas canvas;
     RectTransform canvasRect;

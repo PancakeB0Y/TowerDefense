@@ -10,11 +10,11 @@ public class WaveManager : MonoBehaviour
     [Header("Wave parameters")]
     public int numberOfWaves = 3;
 
+    [Header("Debug field")]
     [SerializeField] List<EnemySpawner> spawners;
 
     [HideInInspector] public int currentWave { get; private set; } = 0;
 
-    //For Unit Test
     [SerializeField] bool spawnOnStart = false;
 
     public System.Action onWaveFinished;

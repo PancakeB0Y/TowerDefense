@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
+    [Header("Buttons")]
     [SerializeField] Button tower1Button;
     [SerializeField] Button tower2Button;
     [SerializeField] Button tower3Button;
@@ -13,7 +14,7 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            if (tower1Button != null)
+            if (tower1Button != null && tower1Button.IsActive())
             {
                 tower1Button.onClick?.Invoke();
             }
@@ -21,7 +22,7 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            if (tower2Button != null)
+            if (tower2Button != null && tower2Button.IsActive())
             {
                 tower2Button.onClick?.Invoke();
             }
@@ -29,7 +30,7 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
-            if (tower3Button != null)
+            if (tower3Button != null && tower3Button.IsActive())
             {
                 tower3Button.onClick?.Invoke();
             }

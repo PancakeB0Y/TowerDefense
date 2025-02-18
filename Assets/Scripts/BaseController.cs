@@ -7,6 +7,7 @@ public class BaseController : MonoBehaviour
 {
     public static BaseController instance { get; private set; }
 
+    [Header("Debug field")]
     [SerializeField] HPModel hpModel;
 
     public System.Action onBaseDeath;

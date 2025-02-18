@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class TimeScaleSlider : MonoBehaviour
 {
+    [Header("Debug field")]
     [SerializeField] Slider slider;
     [SerializeField] TextMeshProUGUI textMesh;
 

@@ -22,8 +22,6 @@ public class TowerController : MonoBehaviour
 
     public bool isPlaced = false;
 
-    public System.Action onAttack;
-
     List<Renderer> renderers;
 
     void Awake()
